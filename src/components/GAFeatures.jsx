@@ -121,7 +121,9 @@ function GAPrototype() {
   const [showAlertModal, setShowAlertModal] = useState(false)
   const [editingEvent, setEditingEvent] = useState(null)
   const [editingEventSeverity, setEditingEventSeverity] = useState(null)
+  const [editingRule, setEditingRule] = useState(null)
   const [dropdownOpen, setDropdownOpen] = useState(null)
+  const [ruleDropdownOpen, setRuleDropdownOpen] = useState(null)
   
   // Column filters for Events
   const [eventFilters, setEventFilters] = useState({
@@ -213,6 +215,9 @@ function GAPrototype() {
       if (dropdownOpen && !event.target.closest('.dropdown-container')) {
         setDropdownOpen(null)
       }
+      if (ruleDropdownOpen && !event.target.closest('.dropdown-container')) {
+        setRuleDropdownOpen(null)
+      }
       if (openEventFilter && !event.target.closest('.dropdown-container')) {
         setOpenEventFilter(false)
       }
@@ -222,7 +227,7 @@ function GAPrototype() {
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [dropdownOpen, openEventFilter, openRuleFilter])
+  }, [dropdownOpen, ruleDropdownOpen, openEventFilter, openRuleFilter])
 
   const getStatusBadgeColors = (status) => {
     if (status === 'New') return 'bg-red-100 text-red-800'
@@ -251,7 +256,7 @@ function GAPrototype() {
       { name: 'Account Access', selected: selectedTopic.name === 'Account Access' },
     ]
 
-    return (
+  return (
       <div className="flex h-[calc(100vh-200px)] bg-gray-100 rounded-xl overflow-hidden border border-gray-200">
         {/* Left Sidebar */}
         <div className="w-16 bg-white border-r border-gray-200 flex flex-col items-center py-4">
@@ -385,10 +390,10 @@ function GAPrototype() {
               <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
                 <MessageSquare className="w-5 h-5 text-gray-600" />
               </div>
-              <div>
+        <div>
                 <h2 className="text-xl font-bold text-gray-900">Session: January 27, 2026, 4:00:00 PM</h2>
                 <p className="text-sm text-gray-500">Session ID: 24927f36-a077-415d-9aa6-8cc8fa49ee7b</p>
-              </div>
+        </div>
             </div>
           </div>
 
@@ -486,14 +491,14 @@ function GAPrototype() {
 
               {/* Interaction Steps */}
               <div className="space-y-3">
-                <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-500" />
                   <span className="text-sm text-gray-600">Input:</span>
                   <span className="flex items-center gap-1 text-sm text-blue-600">
                     <span className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs">🎤</span>
                     Input
                   </span>
-                </div>
+        </div>
                 <div className="flex items-center gap-3 ml-2 border-l-2 border-dotted border-gray-300 pl-4">
                   <CheckCircle2 className="w-5 h-5 text-green-500" />
                   <span className="text-sm text-gray-600">Reasoning:</span>
@@ -501,7 +506,7 @@ function GAPrototype() {
                     <Sparkles className="w-4 h-4 text-purple-500" />
                     Action Selection
                   </span>
-                </div>
+      </div>
                 <div className="flex items-center gap-3 ml-2 border-l-2 border-dotted border-gray-300 pl-4">
                   <CheckCircle2 className="w-5 h-5 text-green-500" />
                   <span className="text-sm text-gray-600">Reasoning:</span>
@@ -938,7 +943,7 @@ function GAPrototype() {
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                           >
                             <Edit className="w-4 h-4" />
-                            Edit Severity
+                            Edit Incident
                           </button>
           </div>
                       )}
@@ -1084,7 +1089,33 @@ function GAPrototype() {
                           {d.status}
                         </div>
                       </td>
-                      <td className="py-4 px-4"><button className="text-gray-400 hover:text-blue-600 border border-gray-200 rounded-full p-1"><ChevronDown className="w-4 h-4" /></button></td>
+                      <td className="py-4 px-4 relative dropdown-container">
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setRuleDropdownOpen(ruleDropdownOpen === d.id ? null : d.id)
+                          }}
+                          className="text-gray-400 hover:text-blue-600 border border-gray-200 rounded-full p-1"
+                        >
+                          <MoreVertical className="w-4 h-4" />
+                        </button>
+                        {ruleDropdownOpen === d.id && (
+                          <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 shadow-lg rounded-md z-50 py-1 dropdown-container">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setEditingRule(d)
+                                setShowAlertModal(true)
+                                setRuleDropdownOpen(null)
+                              }}
+                              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                            >
+                              <Edit className="w-4 h-4" />
+                              Edit Rule
+                            </button>
+                          </div>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -1094,11 +1125,11 @@ function GAPrototype() {
         </div>
       )}
 
-      {/* Edit Severity Modal (for Events only) */}
+      {/* Edit Incident Modal (for Events only - Status and Severity) */}
       {editingEventSeverity && <EditSeverityModal event={editingEventSeverity} onClose={() => { setEditingEventSeverity(null) }} />}
       
       {/* Create/Edit Alert Modal (for Rules) */}
-      {showAlertModal && <CreateAlertModal event={editingEvent} onClose={() => { setShowAlertModal(false); setEditingEvent(null) }} />}
+      {showAlertModal && <CreateAlertModal event={editingEvent} rule={editingRule} onClose={() => { setShowAlertModal(false); setEditingEvent(null); setEditingRule(null) }} />}
     </div>
   )
 }
@@ -1842,21 +1873,23 @@ function UserJourney() {
 
 function EditSeverityModal({ event, onClose }) {
   const [severity, setSeverity] = useState(event?.severity || 'High')
+  const [status, setStatus] = useState(event?.status || 'New')
 
   const handleSave = () => {
-    // Update the event severity (in a real app, this would call an API)
-    console.log(`Updating event ${event.id} severity to ${severity}`)
+    // Update the event severity and status (in a real app, this would call an API)
+    console.log(`Updating event ${event.id} severity to ${severity} and status to ${status}`)
     onClose()
   }
 
   const severityOptions = ['Critical', 'High', 'Medium', 'Low']
+  const statusOptions = ['New', 'Acknowledged', 'Closed']
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-          <h2 className="text-lg font-semibold text-gray-800">Edit Severity</h2>
+          <h2 className="text-lg font-semibold text-gray-800">Edit Incident</h2>
           <button onClick={onClose} className="p-1 rounded-full border border-gray-300 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
             <XCircle className="w-5 h-5" />
           </button>
@@ -1866,6 +1899,21 @@ function EditSeverityModal({ event, onClose }) {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Alert Name</label>
             <p className="text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">{event?.name}</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <span className="text-red-500 mr-1">*</span>Status
+            </label>
+            <select 
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {statusOptions.map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -1903,7 +1951,7 @@ function EditSeverityModal({ event, onClose }) {
   )
 }
 
-function CreateAlertModal({ event, onClose }) {
+function CreateAlertModal({ event, rule, onClose }) {
   // Parse event data if editing
   const getMetricFromName = (name) => {
     if (name?.includes('Error Rate')) return 'error-rate'
@@ -1916,15 +1964,60 @@ function CreateAlertModal({ event, onClose }) {
     const match = name?.match(/(\d+)%/)
     return match ? match[1] : '5'
   }
+
+  // Parse rule data if editing
+  const getMetricFromRule = (ruleMetric) => {
+    if (!ruleMetric) return 'error-rate'
+    if (ruleMetric.includes('Error Rate')) return 'error-rate'
+    if (ruleMetric.includes('Latency') || ruleMetric.includes('Avg Latency')) return 'latency'
+    if (ruleMetric.includes('Escalation')) return 'escalation'
+    if (ruleMetric.includes('Deflection')) return 'deflection'
+    if (ruleMetric.includes('Abandonment')) return 'abandonment'
+    return 'error-rate'
+  }
+
+  const getThresholdFromRule = (ruleThreshold) => {
+    if (!ruleThreshold) return '5'
+    const match = ruleThreshold.match(/(\d+)/)
+    return match ? match[1] : '5'
+  }
+
+  const getConditionFromRule = (ruleThreshold) => {
+    if (!ruleThreshold) return 'above'
+    if (ruleThreshold.includes('Above')) return 'above'
+    if (ruleThreshold.includes('Below')) return 'below'
+    return 'above'
+  }
+
+  const getAgentSelectionFromRule = (agentApiName) => {
+    if (agentApiName === 'All_Agents' || agentApiName === 'All') return 'all'
+    return 'service'
+  }
   
-  const [metric, setMetric] = useState(event ? getMetricFromName(event.name) : 'error-rate')
-  const [condition, setCondition] = useState('above')
-  const [threshold, setThreshold] = useState(event ? getThresholdFromName(event.name) : '5')
+  // Determine if we're editing (rule takes precedence over event)
+  const isEditing = rule || event
+  
+  const [metric, setMetric] = useState(
+    rule ? getMetricFromRule(rule.metric) : 
+    event ? getMetricFromName(event.name) : 'error-rate'
+  )
+  const [condition, setCondition] = useState(
+    rule ? getConditionFromRule(rule.threshold) : 'above'
+  )
+  const [threshold, setThreshold] = useState(
+    rule ? getThresholdFromRule(rule.threshold) : 
+    event ? getThresholdFromName(event.name) : '5'
+  )
   const [cooldown, setCooldown] = useState('30')
   const [severity, setSeverity] = useState(event?.severity || 'High')
-  const [agentSelection, setAgentSelection] = useState(event?.agentName === 'All' ? 'all' : 'service')
+  const [agentSelection, setAgentSelection] = useState(
+    rule ? getAgentSelectionFromRule(rule.agentApiName) :
+    event?.agentName === 'All' ? 'all' : 'service'
+  )
   const [description, setDescription] = useState(event?.reason || '')
-  const [alertName, setAlertName] = useState(event?.name || '')
+  const [alertName, setAlertName] = useState(rule?.name || event?.name || '')
+  const [agentApiName, setAgentApiName] = useState(rule?.agentApiName || '')
+  const [agentType, setAgentType] = useState(rule?.agentType || '')
   const [alertMethod, setAlertMethod] = useState(event?.alertMethod || 'threshold')
 
   // Recommend alert method based on metric selection
@@ -1951,8 +2044,8 @@ function CreateAlertModal({ event, onClose }) {
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-start">
           <div className="text-center flex-1">
-            <h2 className="text-xl font-medium text-gray-800">{event ? 'Edit Monitoring Alert Rule' : 'Create New Monitoring Alert Rule'}</h2>
-            <p className="text-sm text-gray-500 mt-1">{event ? 'Update alert conditions and notifications settings' : 'Configure alert conditions and notifications settings'}</p>
+            <h2 className="text-xl font-medium text-gray-800">{isEditing ? 'Edit Monitoring Alert Rule' : 'Create New Monitoring Alert Rule'}</h2>
+            <p className="text-sm text-gray-500 mt-1">{isEditing ? 'Update alert conditions and notifications settings' : 'Configure alert conditions and notifications settings'}</p>
           </div>
           <button onClick={onClose} className="p-1 rounded-full border border-gray-300 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
             <XCircle className="w-5 h-5" />
@@ -2033,6 +2126,36 @@ function CreateAlertModal({ event, onClose }) {
                 </div>
               </div>
             </div>
+
+            {rule && (
+              <>
+                <div>
+                  <label className="block text-sm font-normal text-gray-700 mb-1">
+                    <span className="text-red-500 mr-1">*</span>Agent API Name
+                  </label>
+                  <input 
+                    type="text"
+                    value={agentApiName}
+                    onChange={(e) => setAgentApiName(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter agent API name..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-normal text-gray-700 mb-1">
+                    <span className="text-red-500 mr-1">*</span>Agent Type
+                  </label>
+                  <input 
+                    type="text"
+                    value={agentType}
+                    onChange={(e) => setAgentType(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter agent type..."
+                  />
+                </div>
+              </>
+            )}
           </div>
 
           {/* Alert Method Section - NEW */}
