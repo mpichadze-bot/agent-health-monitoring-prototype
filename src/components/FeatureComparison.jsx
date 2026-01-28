@@ -167,12 +167,6 @@ export default function FeatureComparison() {
           technicalDetails: 'Seamless integration with Data Cloud infrastructure for reliable metric persistence',
           benefits: ['Enterprise-grade reliability', 'Scalable storage layer', 'Consistent with Salesforce data architecture']
         } },
-        { id: 'dmo-integration', feature: 'Use DMOs as Storage Layer (Telemetry Log, Trace Span, Metrics)', ga: true, gaRelease: '262', priority: 'P1', details: { 
-          description: 'Use Data Model Objects (DMOs) as the storage layer for metrics. Includes Telemetry Log (ssot__TelemetryLog__dlm), Telemetry Trace Span (ssot__TelemetryTraceSpan__dlm), and Telemetry Metrics (ssot__TelemetryMetrics__dlm).',
-          jtbd: 'I need a standardized, scalable storage layer that integrates with our data platform.',
-          technicalDetails: 'DMOs: TelemetryLog (DLO: ObservabilityLogs), TelemetryTraceSpan (DLO: ObservabilitySpans), TelemetryMetrics (DLO: ObservabilityMetrics)',
-          benefits: ['Standardized data model', 'Better integration with Data Cloud', 'Enhanced query performance']
-        } },
       ]
     },
     {

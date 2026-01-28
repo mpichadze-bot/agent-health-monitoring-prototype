@@ -10,7 +10,7 @@ export default function GAFeatures() {
     { id: 'journey', icon: Users, label: 'User Journey', priority: 'ALL', release: 'ALL' },
     { id: 'investigation', icon: FileSearch, label: 'Investigation Page', priority: 'P0', release: '260' },
     { id: 'reroute', icon: ArrowUpRight, label: 'Reroute to Agent Builder', priority: 'P0', release: '260' },
-    { id: 'dmo', icon: Database, label: 'Efficiency/Scalability', priority: 'P0', release: '260-262' },
+    { id: 'dmo', icon: Database, label: 'Efficiency/Scalability', priority: 'P0', release: '260' },
     { id: 'metrics', icon: BarChart3, label: 'OOTB & Custom Metrics', priority: 'P0', release: '260' },
     { id: 'availability', icon: Activity, label: 'Agent Availability', priority: 'P0', release: '260' },
     { id: 'alerting', icon: Bell, label: 'Alerting Improvements', priority: 'P0', release: '260-264' },
@@ -2778,9 +2778,9 @@ function DMOIntegration() {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h3 className="text-xl font-bold text-emerald-800">Efficiency/Scalability - DMO Integration</h3>
-              <ReleaseBadge release="260-262" />
+              <ReleaseBadge release="260" />
             </div>
-            <p className="text-emerald-700 mt-2">More efficient metric calculation/storage (P0, 260) and DMO storage layer (P1, 262).</p>
+            <p className="text-emerald-700 mt-2">More efficient metric calculation/storage (P0, 260).</p>
           </div>
         </div>
       </div>
@@ -2813,75 +2813,6 @@ function DMOIntegration() {
         </div>
       </div>
 
-      {/* P1 - Use DMOs as Storage Layer */}
-      <div className="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <h4 className="text-lg font-semibold text-gray-900">P1: Use DMOs as Storage Layer</h4>
-          <ReleaseBadge release="262" /><PriorityBadge priority="P1" />
-        </div>
-        <p className="text-sm text-gray-600 mb-4">Use DMOs as the storage layer for your metrics.</p>
-
-        <div className="grid grid-cols-3 gap-6">
-          <div className="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-6">
-            <div className="flex items-center gap-2 mb-3">
-              <Database className="w-5 h-5 text-amber-600" />
-              <h4 className="font-semibold text-gray-900">Telemetry Log</h4>
-              <PriorityBadge priority="P1" />
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="p-2 bg-gray-50 rounded">
-                <span className="font-medium text-gray-700">DMO:</span>
-                <code className="text-xs text-gray-600 ml-2">ssot__TelemetryLog__dlm</code>
-              </div>
-              <div className="p-2 bg-gray-50 rounded">
-                <span className="font-medium text-gray-700">DLO:</span>
-                <span className="text-gray-600 ml-2">ObservabilityLogs</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-6">
-            <div className="flex items-center gap-2 mb-3">
-              <Database className="w-5 h-5 text-amber-600" />
-              <h4 className="font-semibold text-gray-900">Telemetry Trace Span</h4>
-              <PriorityBadge priority="P1" />
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="p-2 bg-gray-50 rounded">
-                <span className="font-medium text-gray-700">DMO:</span>
-                <code className="text-xs text-gray-600 ml-2">ssot__TelemetryTraceSpan__dlm</code>
-              </div>
-              <div className="p-2 bg-gray-50 rounded">
-                <span className="font-medium text-gray-700">DLO:</span>
-                <span className="text-gray-600 ml-2">ObservabilitySpans</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-6">
-            <div className="flex items-center gap-2 mb-3">
-              <Database className="w-5 h-5 text-amber-600" />
-              <h4 className="font-semibold text-gray-900">Telemetry Metrics</h4>
-              <PriorityBadge priority="P1" />
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="p-2 bg-gray-50 rounded">
-                <span className="font-medium text-gray-700">DMO:</span>
-                <code className="text-xs text-gray-600 ml-2">ssot__TelemetryMetrics__dlm</code>
-              </div>
-              <div className="p-2 bg-gray-50 rounded">
-                <span className="font-medium text-gray-700">DLO:</span>
-                <span className="text-gray-600 ml-2">ObservabilityMetrics</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-4 p-4 bg-amber-50 rounded-lg border border-amber-200">
-          <CheckCircle2 className="w-5 h-5 text-amber-600 mb-2" />
-          <p className="text-sm font-medium text-gray-900">Scalable Storage</p>
-          <p className="text-xs text-gray-600 mt-1">DMO layer handles large volumes</p>
-        </div>
-      </div>
     </div>
   )
 }
