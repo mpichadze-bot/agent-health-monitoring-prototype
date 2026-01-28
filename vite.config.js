@@ -4,5 +4,9 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/agent-health-monitoring-prototype/',
+  base: process.env.NODE_ENV === 'production' ? '/agent-health-monitoring-prototype/' : '/',
+  server: {
+    port: 30002,
+    host: true,
+  },
 })
