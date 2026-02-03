@@ -2,7 +2,8 @@ import { Activity, Cloud, HelpCircle, User } from 'lucide-react'
 
 export default function Header({ activeTab, setActiveTab }) {
   const tabs = [
-    { id: 'ga', label: 'GA Features (260+)', color: 'bg-emerald-500' },
+    { id: 'beta', label: 'Beta (258-260)', color: 'bg-amber-500' },
+    { id: 'ga', label: 'GA Features (260-266+)', color: 'bg-emerald-500' },
     { id: 'comparison', label: 'Feature Comparison', color: 'bg-purple-500' },
   ]
 

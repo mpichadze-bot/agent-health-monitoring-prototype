@@ -5,7 +5,6 @@ import {
   ArrowRight,
   Bell,
   BarChart3,
-  Download,
   FileSearch,
   Sparkles,
   Zap,
@@ -92,26 +91,134 @@ export default function FeatureComparison() {
 
   const [features, setFeatures] = useState([
     {
+      category: 'Monitoring Dashboard',
+      icon: BarChart3,
+      items: [
+        { id: 'monitoring-tab', feature: 'Health Monitoring Tab in Agentforce Observability', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'User sees a Monitoring tab under Agentforce Observability titled "Health Monitoring". Dashboard embedded via Tableau Next.',
+          jtbd: 'A Salesforce admin can view agent metrics in the Agentforce Observability dashboard.',
+          acceptanceCriteria: ['User sees a Monitoring tab under Agentforce Observability titled "Health Monitoring"', 'The dashboard loads without delay and displays three metrics: Agent Error Rate, Turn Latency, and Escalation Rate', 'The dashboard is embedded via Tableau Next and follows the Figma prototype provided'],
+          userPersona: 'Admin'
+        } },
+        { id: 'manual-refresh', feature: 'Manual Refresh', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Dashboard supports manual user-initiated refresh. Shows timestamp for last refresh.',
+          acceptanceCriteria: ['User can manually refresh the dashboard', 'Timestamp of last refresh displayed']
+        } },
+        { id: 'time-window-24h', feature: 'Last 24 Hour Default View', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Default view selected on the dashboard is the last 24 hours for all metrics.',
+          acceptanceCriteria: ['Default view is last 24 hours for all metrics']
+        } },
+        { id: 'filter-dimensions', feature: 'Filter by Agent ID, Agent Type, Channel', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'User sees a filter panel with the ability to filter by Agent ID (typeahead search), Agent Type (dropdown), and Channel.',
+          acceptanceCriteria: ['Filter panel with Agent ID (typeahead search)', 'Filter by Agent Type (dropdown)', 'Filter by Channel', 'Filters update the dashboard without needing a full refresh']
+        } },
+        { id: 'aggregation-5min', feature: '5 Minute Aggregation Window', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Aggregation is over 5 minutes for all metrics on the dashboard. This is a fixated selection for GA launch.',
+          acceptanceCriteria: ['Aggregation is over 5 minutes for all metrics']
+        } },
+        { id: 'drilldown-scale-center', feature: 'Drilldown to Scale Center', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Support drilldown from metric to Scale Center report page.',
+          acceptanceCriteria: ['User can drilldown from metric to Scale Center report page']
+        } },
+      ]
+    },
+    {
+      category: 'Alert Configuration (Native UI)',
+      icon: Bell,
+      items: [
+        { id: 'alert-config-ui', feature: 'Native UI to Configure Alerts in Agentforce Observability', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Admins can set alerts for any of the metrics in the monitoring dashboard. Configured alerts use Tableau next\'s notification service under the hood.',
+          jtbd: 'A Salesforce admin can configure alerts directly within Agentforce Observability (native UI).',
+          acceptanceCriteria: ['User sees a "Configure Alerts" button or tab directly inside the Agentforce Observability', 'Configured alerts are using Tableau next\'s notification service under the hood', 'UI allows selecting Metric, Condition (Above, Below), Threshold, Severity (optional), Enable/Disable alert'],
+          userPersona: 'Admin'
+        } },
+        { id: 'alert-cooldown-default', feature: 'Cooldown Period (Default 30 minutes)', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P1', details: {
+          description: 'Set a cooldown for Alerts (default 30 minutes) when creating alerts. When an alert is triggered, a second one is not triggered again for the same reason for the next 30 minutes.',
+          acceptanceCriteria: ['When setting up an alert, system applies a default cooldown of 30 minutes', 'If multiple breaches occur during cooldown, no additional alert is sent', 'After cooldown, alerts can fire again if threshold is still breached']
+        } },
+        { id: 'alert-email', feature: 'Email Alert Channel', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'When the alert condition is met, an email is sent to the user if they have enabled alerts for themselves. This goes only to the specific user who has enabled the alert.',
+          jtbd: 'A Salesforce admin can receive alerts via email.',
+          acceptanceCriteria: ['When alert condition is met, email is sent to the user if they have enabled alerts for themselves', 'SLA: when the alert threshold is breached, the alert is delivered within 30 seconds at most'],
+          sla: 'Alert delivered within 30 seconds'
+        } },
+      ]
+    },
+    {
+      category: 'Core Metrics (P0)',
+      icon: Activity,
+      items: [
+        { id: 'metric-error-rate', feature: 'Agent Error Rate', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: '% of agent responses that failed (e.g., Action and LLM errors as well as any other errors in planner). Default: 5 min aggregation window.',
+          jtbd: 'A Salesforce admin can view the three metrics on the dashboard: Agent Error Rate, Average Turn Latency, Escalation Rate.',
+          acceptanceCriteria: ['Dashboard displays the % of agent interactions with an error per selected time window', 'User can filter error rate by agent ID, type, session ID, and channel', 'Metrics update every minute on a rolling window assuming the user is on the real time pipeline'],
+          calculation: 'Total error_interactions / total_interactions'
+        } },
+        { id: 'metric-latency', feature: 'Average Interaction Latency', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Avg. time (ms) from request to response per interaction. Default: 5 min aggregation window.',
+          acceptanceCriteria: ['Dashboard displays average latency (in ms or seconds) from agent invocation to reply for the selected time window'],
+          calculation: 'totalLatency / total_Interactions'
+        } },
+        { id: 'metric-escalation', feature: 'Escalation Rate', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: '% of sessions escalated to human agents. Default: 5 min aggregation window.',
+          acceptanceCriteria: ['Dashboard displays % of sessions that were escalated to human agents'],
+          calculation: 'escalated_sessions / total_sessions'
+        } },
+      ]
+    },
+    {
+      category: 'Raw Metrics & Signals Export',
+      icon: ExternalLink,
+      items: [
+        { id: 'export-config', feature: 'Export Configuration to External Tools', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Admin can configure export to their own monitoring tools (i.e. Splunk, Datadog, New Relic) via a basic connector UI. Export includes low-latency delivery (<10s delay) for supported metrics.',
+          jtbd: 'A Salesforce admin can export raw metric data in real time to external observability tools.',
+          acceptanceCriteria: ['Admin can configure export to their own monitoring tools (i.e. Splunk, Datadog, New Relic) via a basic connector UI', 'Export includes low-latency delivery (<10s delay) for supported metrics', 'Exported payload includes metric name, value, timestamp, session ID, agent ID, org ID, and all relevant metadata'],
+          userPersona: 'Admin'
+        } },
+        { id: 'export-metric-selection', feature: 'Select Metrics to Export', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Admin can select one or more metrics (e.g., Turn Latency, Escalation Rate) to be exported. Export settings persist across sessions.',
+          jtbd: 'A Salesforce admin can configure which metrics are exported.',
+          acceptanceCriteria: ['Admin can select one or more metrics to be exported', 'Export settings persist across sessions']
+        } },
+        { id: 'export-toggle', feature: 'Enable/Disable Export', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Admin can disable exports temporarily via UI toggle or API. The system stops sending new events. Admin can re-enable without reconfiguration.',
+          jtbd: 'A Salesforce admin can pause or disable metric export without data loss.',
+          acceptanceCriteria: ['Admin can disable exports temporarily via UI toggle or API', 'The system stops sending new events', 'Admin can re-enable without reconfiguration']
+        } },
+        { id: 'export-status', feature: 'Export Connection Status Indicator', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Admin sees a basic status indicator showing connection health to external monitoring tool. If an error occurs (e.g., failed auth, dropped payload), admin receives a UI warning or log message.',
+          jtbd: 'A Salesforce admin can view status of export connections.',
+          acceptanceCriteria: ['Admin sees a basic status indicator showing connection health to external monitoring tool', 'If an error occurs, admin receives a UI warning or log message']
+        } },
+        { id: 'export-schema', feature: 'Export Schema with Full Context', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'Each event contains: metric_name, value, timestamp, agent_id, session_id, org_id, channel, agent_type. Schema is consistent across tools and supports validation/testing in pre-prod environments.',
+          jtbd: 'Exported data conforms to schema with full context for downstream processing.',
+          acceptanceCriteria: ['Each event contains: metric_name, value, timestamp, agent_id, session_id, org_id, channel, agent_type', 'Schema is consistent across tools and supports validation/testing in pre-prod environments']
+        } },
+      ]
+    },
+    {
       category: 'Investigation Page (STDM)',
       icon: FileSearch,
       items: [
-        { id: 'investigation', feature: 'Open Investigation from Alert', ga: true, gaRelease: '260', priority: 'P0', details: { 
-          description: 'Clicking any alert notification opens the Investigation Page with STDM session traces and metadata.',
+        { id: 'investigation', feature: 'Investigation Page for Health Monitoring Alerts (STDM)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
+          description: 'Clicking on the notification to visit the investigation page for AHM showing detailed Session trace data. List of Topics (by Agent), Agents, Actions, Sessions and Steps.',
           jtbd: 'Right after an alert fires, I want a single click from the notification to an investigation view with detailed session traces so I can triage the alert.',
           acceptanceCriteria: ['Clicking any alert notification opens the Investigation Page for that alert', 'Page loads relevant STDM session traces and metadata (agent, metric, alert time)', 'If traces are unavailable, clear empty-state and retry action are shown'],
           userPersona: 'Admin / Agent Builder'
         } },
-        { id: 'investigation-stdm', feature: 'STDM Structure (Topics, Agents, Actions, Sessions, Steps)', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'investigation-stdm', feature: 'STDM Structure (Topics, Agents, Actions, Sessions, Steps)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Comprehensive STDM data structure showing Topics by Agent, Agents, Actions, Sessions, and Steps with Blast Radius analysis, Version Impact, and Errors by Step/Topic tables.',
           jtbd: 'I need to quickly understand which topics, agents, and steps are affected by an alert so I can prioritize my investigation.',
           benefits: ['Blast Radius visualization showing affected channels, agent types, and agents', 'Version Impact analysis to identify problematic releases', 'Detailed error breakdowns by Step and Topic for root cause analysis']
         } },
-        { id: 'auto-focus', feature: 'Auto-Focus on Alert Time Window (5 min)', ga: true, gaRelease: '262', priority: 'P1', details: { 
-          description: 'Default time window focuses on the alert window (e.g., 5 minutes around fire time).',
+        { id: 'auto-focus', feature: 'Page Focused on Alert Time Window (5 min)', beta: false, ga: true, gaRelease: '262', priority: 'P1', details: { 
+          description: 'The page should be focused on the specific time window within which the alert was fired (e.g., 5 minute window).',
           jtbd: 'I want the investigation scoped to the exact alert window so I don\'t waste time hunting for the failure.',
           acceptanceCriteria: ['The default time window focuses on the alert\'s window (e.g., 5 minutes around the fire time)']
         } },
-        { id: 'deep-links-optimizer', feature: 'Deep Links to Optimizer', ga: true, gaRelease: '262', priority: 'P2', details: { 
+        { id: 'deep-links-optimizer', feature: 'Deep Links to Optimizer', beta: false, ga: true, gaRelease: '262', priority: 'P2', details: { 
           description: 'Each trace row provides "Open in Optimizer" deep link landing on that exact moment.',
           jtbd: 'When I spot a suspect step, I want a one-click deep link to the Optimizer at that exact moment.',
           acceptanceCriteria: ['Each trace row provides an "Open in Optimizer" deep link landing precisely on that Moment'],
@@ -120,35 +227,30 @@ export default function FeatureComparison() {
       ]
     },
     {
-      category: 'Reroute to Agent Builder',
+      category: 'Reroute to Agent Builder & Tools',
       icon: ArrowUpRight,
       items: [
-        { id: 'reroute-topic', feature: 'Topic → Agent Builder', ga: true, gaRelease: '260', priority: 'P0', details: { 
-          description: 'Clicking on a Topic navigates directly to the agent configuration in Agent Builder.',
-          jtbd: 'When analyzing a specific topic in the monitoring view, I want to navigate directly to its configuration to fix issues or inspect context.',
+        { id: 'reroute-topic', feature: 'Topic → Agent Builder', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
+          description: 'Clicking on a Topic navigates directly to that specific agent topic in Agent Builder.',
+          jtbd: 'When I find a failure, I want to immediately jump to the configuration source to fix it.',
           acceptanceCriteria: ['Clicking on a Topic navigates to the agent in Agent Builder'],
           benefit: 'Accelerates investigation workflow by eliminating manual navigation'
         } },
-        { id: 'reroute-action', feature: 'Action → Agent Builder', ga: true, gaRelease: '260', priority: 'P0', details: { 
-          description: 'Clicking on an Action navigates directly to the agent configuration in Agent Builder.',
-          jtbd: 'When I identify a problematic action, I want to jump directly to its configuration to make corrections.',
-          acceptanceCriteria: ['Clicking on an Action navigates to the agent in Agent Builder']
-        } },
-        { id: 'reroute-session', feature: 'Session → Session Page', ga: true, gaRelease: '260', priority: 'P0', details: { 
-          description: 'Clicking on a Session navigates to the specific session detail in Session Page.',
-          jtbd: 'When I see a failed session, I want to view its full trace and execution details immediately.',
-          acceptanceCriteria: ['Clicking on a Session navigates to the specific session in the Session Page'],
-          benefit: 'Enables deep investigation into individual session failures'
-        } },
-        { id: 'reroute-agent', feature: 'Agent → Agent Builder', ga: true, gaRelease: '260', priority: 'P1', details: { 
-          description: 'Clicking on an Agent name navigates to the high-level agent view in Agent Builder.',
-          jtbd: 'I want to easily jump to the high-level agent view without manually searching.',
-          acceptanceCriteria: ['Clicking on an Agent name navigates to the agent in Agent Builder']
-        } },
-        { id: 'reroute-step', feature: 'Step → Step within Session View', ga: true, gaRelease: '260', priority: 'P1', details: { 
+        { id: 'reroute-step', feature: 'Step → Step within Session View', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Clicking on a Step navigates to the specific step within the session view.',
           jtbd: 'When I identify a problematic step, I want to jump directly to that step\'s details within the session.',
           acceptanceCriteria: ['Clicking on a Step navigates to the specific step within the session view']
+        } },
+        { id: 'reroute-action', feature: 'Action → Scale Center (Flow or APEX)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
+          description: 'Clicking on an Action navigates to Scale Center based on the action type (Flow or APEX).',
+          jtbd: 'When I identify a problematic action, I want to jump directly to Scale Center to inspect Flow or APEX.',
+          acceptanceCriteria: ['Clicking on an Action navigates to Scale Center based on action type (Flow or APEX)']
+        } },
+        { id: 'reroute-optimizer', feature: 'Deep Links to Optimizer', beta: false, ga: true, gaRelease: '262', priority: 'P2', details: { 
+          description: 'Provide deep links into specific moments within the Optimizer tool.',
+          jtbd: 'I want to inspect the detailed logic execution of a specific step.',
+          acceptanceCriteria: ['Each trace row provides deep link landing precisely on that Moment in Optimizer'],
+          dependency: 'Optimizer'
         } },
       ]
     },
@@ -156,13 +258,13 @@ export default function FeatureComparison() {
       category: 'Efficiency/Scalability',
       icon: Database,
       items: [
-        { id: 'no-recalculation', feature: 'Efficient Metric Calculation/Storage (No Recalculation)', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'no-recalculation', feature: 'Efficient Metric Calculation/Storage (No Recalculation)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'More efficient metric calculation/storage so we don\'t recalculate metrics. Metrics are calculated once and stored for efficient access.',
           jtbd: 'I need metrics to be available quickly without system overhead from recalculation.',
           benefits: ['Reduced system load and improved performance', 'Faster dashboard load times', 'More scalable for high-volume orgs'],
           technicalDetails: 'Metrics stored once, accessed efficiently without re-computation'
         } },
-        { id: 'dc1-support', feature: 'DC1 Support', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'dc1-support', feature: 'DC1 Support', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Data Cloud 1 support for metric storage and processing infrastructure.',
           technicalDetails: 'Seamless integration with Data Cloud infrastructure for reliable metric persistence',
           benefits: ['Enterprise-grade reliability', 'Scalable storage layer', 'Consistent with Salesforce data architecture']
@@ -173,46 +275,52 @@ export default function FeatureComparison() {
       category: 'OOTB & Custom Metrics',
       icon: BarChart3,
       items: [
-        { id: 'ootb-metrics', feature: 'OOTB Metrics from Analytics (STDM/SDM) for Alerting', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'ootb-metrics', feature: 'OOTB Metrics from Analytics (STDM/SDM) for Alerting', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Users can add/select any OOTB metrics from STDM/SDM (same data available in Analytics) to trigger Alerts. Ensures consistency between monitoring and reporting.',
           jtbd: 'I want to trigger alerts based on the same standard metrics (STDM/SDM) available in Analytics so my monitoring is consistent with my reporting.',
           acceptanceCriteria: ['Users can add/select any OOTB metrics from the STDM/SDM to trigger an Alert', 'Metrics match exactly what exists in Analytics'],
           userPersona: 'Admin / Agent Builder',
           examples: ['Error Rate', 'Latency', 'Escalation Rate', 'Context Precision', 'Answer Relevancy']
         } },
-        { id: 'custom-metrics', feature: 'Custom Metrics for Alerting', ga: true, gaRelease: '260', priority: 'P1', details: { 
+        { id: 'custom-metrics', feature: 'Custom Metrics for Alerting', beta: false, ga: true, gaRelease: '260', priority: 'P1', details: { 
           description: 'Allow users to add custom metrics for creating alerts tailored to unique business KPIs beyond standard OOTB metrics.',
           jtbd: 'I want to define custom metrics for unique business KPIs and set alerts on them.',
           acceptanceCriteria: ['Allow users to add custom metrics for creating an alert'],
           userPersona: 'Admin / Agent Builder',
           useCase: 'Track business-specific success criteria like First Contact Resolution or Custom Satisfaction Scores'
         } },
-        { id: 'severity-grouping', feature: 'Alert Severity and Grouping (Critical/Warning/Info)', ga: true, gaRelease: '262', priority: 'P1', details: { 
-          description: 'Users can assign "Critical," "Warning," or "Info" levels to alerts for better prioritization and filtering.',
-          jtbd: 'I want to distinguish between critical outages and minor warnings, and prevent my inbox from being flooded by the same error across multiple agents.',
-          acceptanceCriteria: ['Users can assign "Critical," "Warning," or "Info" levels to alerts', 'Alerts can be filtered and sorted by severity'],
-          benefits: ['Better alert triage', 'Reduced alert fatigue', 'Clearer incident prioritization']
-        } },
       ]
     },
     {
-      category: 'Agent Availability & Reliability',
+      category: 'Agent & Channel Availability',
       icon: Activity,
       items: [
-        { id: 'heartbeat', feature: 'Heartbeat Metric (0 Sessions vs System Unresponsive)', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'agent-availability', feature: 'Agent Availability (STDM)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
+          description: 'Add Agent Availability metric based on STDM records (e.g., distinguishing between "no traffic" and "unresponsive").',
+          jtbd: 'I need to know if my agent is actually up and running.',
+          acceptanceCriteria: ['Agent Availability metric based on STDM records'],
+          userPersona: 'Admin'
+        } },
+        { id: 'channel-availability', feature: 'Channel Availability', beta: false, ga: true, gaRelease: '262', priority: 'P0', details: { 
+          description: 'Add Channel Availability metrics. See "Agent Availability Metric & Alerting" PRD.',
+          jtbd: 'I need to know if specific channels (Voice/Chat) are down.',
+          acceptanceCriteria: ['Channel Availability metrics added'],
+          userPersona: 'Admin'
+        } },
+        { id: 'heartbeat', feature: 'Heartbeat Metric (0 Sessions vs System Unresponsive)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'System distinguishes between "0 sessions" (no traffic) and "System Unresponsive" (requests sent but not acknowledged).',
           jtbd: 'I need to know immediately if my agent is completely unresponsive (down) versus just having low traffic, so I can initiate a P0 incident response.',
           acceptanceCriteria: ['Heartbeat Metric distinguishes between "0 sessions" and "System Unresponsive"', 'System tracks handshake responses vs silence'],
           userPersona: 'Admin',
           criticalityReason: 'Prevents false positives during low-traffic periods and ensures real outages are identified immediately'
         } },
-        { id: 'downtime-alert', feature: 'Downtime Alert (Agent Unresponsive)', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'downtime-alert', feature: 'Downtime Alert (Agent Unresponsive)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Trigger an alert if agent fails to initiate a session or respond to handshake within x minutes.',
           jtbd: 'I need to be notified immediately when my agent stops responding so I can take action before customers are impacted.',
           acceptanceCriteria: ['Trigger an alert if the agent fails to initiate a session or respond to a handshake within x minutes'],
           sla: 'Alert fires within configured threshold (e.g., 5 minutes of unresponsiveness)'
         } },
-        { id: 'status-indicator', feature: 'Dashboard Status Indicator (Online/Offline/Degraded)', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'status-indicator', feature: 'Dashboard Status Indicator (Online/Offline/Degraded)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Visual status indicator showing Online, Offline, or Degraded state on the dashboard.',
           jtbd: 'I want an at-a-glance view of my agent health status without diving into metrics.',
           acceptanceCriteria: ['Dashboard status indicator displays: Online, Offline, or Degraded'],
@@ -224,43 +332,43 @@ export default function FeatureComparison() {
       category: 'Alerting Improvements',
       icon: Bell,
       items: [
-        { id: 'email-dl', feature: 'Email Distribution Lists', ga: true, gaRelease: '262', priority: 'P0', details: { 
-          description: 'Enable Admins to set up alerts for entire teams via email distribution lists. Add one or more emails/DLs during alert creation with P95 delivery < 5 minutes.',
+        { id: 'email-dl', feature: 'Email Distribution Lists', beta: false, ga: true, gaRelease: '262', priority: 'P0', details: { 
+          description: 'Enable an Admin to set up alerts for others via email distribution lists. Option in alert creation flow to send to admin-provided email lists or send to self. P95 delivery < 5 minutes.',
           jtbd: 'When I\'m creating an alert and monitoring agent health, I want to designate a shared email distribution list as the recipient so the whole on-call team is alerted simultaneously without me becoming a bottleneck.',
           acceptanceCriteria: ['Add one or more emails/DLs during alert creation/edit with format validation', 'Users can uncheck self-email to avoid duplicate notifications', 'Email includes metric, agent, threshold vs. observed value, time window, and link to Investigation Page', 'P95 delivery < 5 minutes; failures logged and surfaced to Admin'],
           userPersona: 'Admin / Agent Builder',
           sla: 'P95 < 5 minutes from event detection to email delivery'
         } },
-        { id: 'anomaly', feature: 'Anomaly Detection (Unusual Change Detection)', ga: true, gaRelease: '260', priority: 'P1', details: { 
+        { id: 'anomaly', feature: 'Anomaly Detection (Unusual Change Detection)', beta: false, ga: true, gaRelease: '262', priority: 'P1', details: { 
           description: 'ML-based anomaly detection using baseline vs. recent window to detect significant deviations. Catch regressions without hand-tuning thresholds.',
           jtbd: 'I want anomaly-based alerts so I catch regressions without hand-tuning thresholds. I want to know if a spike in latency is normal for my org or if this specific agent is underperforming compared to the average.',
           acceptanceCriteria: ['Users can select anomaly detection alerting instead of custom thresholds', 'Uses baseline vs. recent window to detect significant deviations', 'All other alert features work like threshold alerts (email/slack, cooldown)', 'Visual overlay on charts showing "Org Average" vs "This Agent"', 'Trend indicators showing Week-over-Week (WoW) changes'],
           userPersona: 'Admin / Agent Builder',
           benefits: ['Reduces manual threshold tuning', 'Adapts to seasonal patterns', 'Provides org-wide benchmarking context']
         } },
-        { id: 'severity', feature: 'Alert Severity Levels (Critical/Warning/Info)', ga: true, gaRelease: '262', priority: 'P1', details: { 
+        { id: 'severity', feature: 'Alert Severity Levels (Critical/Warning/Info)', beta: false, ga: true, gaRelease: '262', priority: 'P2', details: { 
           description: 'Users can assign severity levels to distinguish critical outages from minor warnings and prevent inbox flooding.',
           jtbd: 'I want to distinguish between critical outages and minor warnings, and prevent my inbox from being flooded by the same error across multiple agents.',
           acceptanceCriteria: ['Users can assign "Critical," "Warning," or "Info" levels to alerts'],
           userPersona: 'Admin',
           useCase: 'Prioritize P0 incidents while tracking lower-severity trends'
         } },
-        { id: 'slack', feature: 'Slack Channel Alerts', ga: true, gaRelease: '262', priority: 'P1', details: { 
+        { id: 'slack', feature: 'Slack Channel Alerts', beta: false, ga: true, gaRelease: '262', priority: 'P1', details: { 
           description: 'Slack message posted to designated channel; P95 delivery < 5 minutes. Integrates into existing team workflow.',
           jtbd: 'When incidents occur, I want alerts posted to a designated Slack channel so we triage in our existing workflow.',
           acceptanceCriteria: ['Users can specify a Slack channel in alert setup', 'Users can still use email if they want', 'Slack message mirrors email fields + deep link', 'P95 delivery < 5 minutes; delivery errors logged with remediation tips'],
           userPersona: 'Admin / Agent Builder',
           benefit: 'Enables real-time collaboration and faster incident response'
         } },
-        { id: 'webhook', feature: 'Webhook/API Delivery (PagerDuty, ServiceNow)', ga: true, gaRelease: '262', priority: 'P1', details: { 
+        { id: 'webhook', feature: 'Webhook/API Delivery (PagerDuty, ServiceNow)', beta: false, ga: true, gaRelease: '262', priority: 'P1', details: { 
           description: 'Send POST request with JSON payload (Metric, Agent ID, Threshold, Timestamp, Severity) to incident management systems with retry logic.',
           jtbd: 'I want alerts sent to my incident management system (PagerDuty, ServiceNow) via webhook so we can automate our response workflows.',
           acceptanceCriteria: ['Input field for "Webhook URL" in alert setup', 'System sends POST request with standard JSON payload', 'Includes retry logic (linear or exponential backoff) for failed deliveries'],
           userPersona: 'DevOps / SRE',
           integration: 'PagerDuty, ServiceNow, or any webhook-compatible incident management system'
         } },
-        { id: 'cooldown-org', feature: 'Admin Org-wide Cooldown Customization', ga: true, gaRelease: '264', priority: 'P1', details: { 
-          description: 'Admin sets global cooldown (15-180 min); identical alerts within cooldown are suppressed but occurrences are recorded.',
+        { id: 'cooldown-org', feature: 'Admin Org-level Cooldown Customization', beta: false, ga: true, gaRelease: '264', priority: 'P1', details: { 
+          description: 'Allow admin-level cooldown customization for the org. Admin sets global cooldown (15-180 min); identical alerts within cooldown are suppressed but occurrences are recorded.',
           jtbd: 'I want org-wide cooldowns so teams aren\'t spammed by repeat alerts.',
           acceptanceCriteria: ['Admin sets a global cooldown (e.g., 15–180 min)', 'Identical alerts within cooldown are suppressed but occurrences are recorded', 'UI shows active cooldown status and next eligible send time'],
           userPersona: 'Admin',
@@ -269,42 +377,42 @@ export default function FeatureComparison() {
       ]
     },
     {
-      category: 'Events & Detectors UI',
+      category: 'Enhanced Experience',
       icon: List,
       items: [
-        { id: 'alerts-section', feature: 'Alerts Section in Sidebar (Detectors/Events Tabs)', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'alerts-section', feature: 'Alerts Section in Sidebar (Detectors/Events Tabs)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Display "Alerts" section in left sidebar with two tabs: Detectors (Config) and Events (Log). Default view is Detectors unless navigating via deep link.',
           jtbd: 'As an Agent Builder, I want a dedicated place to see a history of all alerts.',
           acceptanceCriteria: ['Display "Alerts" section in the left sidebar', 'Structure section with two tabs: Detectors (Config) and Events (Log)', 'Default view is Detectors (unless navigating via deep link)'],
           userPersona: 'Admin / Agent Builder',
           structure: 'Two-tab design separating configuration (Detectors) from execution history (Events)'
         } },
-        { id: 'events-tab', feature: 'Events Tab (Alert Log)', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'events-tab', feature: 'Events Tab (Alert Log)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Table displaying all alert instances with columns: Alert Name, Timestamp, Status, Metric Name, Severity. Provides complete alert history for investigation.',
           jtbd: 'As an Agent Builder, I want to scan my alerts and understand their status.',
           acceptanceCriteria: ['Display table of alert instances with columns: Alert Name, Timestamp, Status, Metric Name, Severity', 'Default sort is "Most Recent First"/Critical', 'Alert Name is a clickable link triggering Smart Routing'],
           userPersona: 'Admin / Agent Builder'
         } },
-        { id: 'events-sort', feature: 'Default Sort: Most Recent First/Critical', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'events-sort', feature: 'Default Sort: Most Recent First/Critical', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Default sort prioritizes latest and critical alerts for immediate attention.',
           benefit: 'Ensures most urgent alerts are always visible first',
           sortLogic: 'Primary: Severity (Critical > Warning > Info), Secondary: Timestamp (Most Recent First)'
         } },
-        { id: 'smart-routing', feature: 'Alert Name Clickable Link (Smart Routing)', ga: true, gaRelease: '260', priority: 'P0', details: { 
+        { id: 'smart-routing', feature: 'Alert Name Clickable Link (Smart Routing)', beta: false, ga: true, gaRelease: '260', priority: 'P0', details: { 
           description: 'Alert Name is a clickable link that intelligently routes users directly to the relevant Session or Investigation View, bypassing the general dashboard.',
           jtbd: 'I want email notification links and Alert Name clicks to take me directly to the relevant data so I can investigate faster.',
           acceptanceCriteria: ['Alert Name is a clickable link triggering the Smart Routing logic'],
           northStar: 'Time to Investigate (TTI) < 10 seconds from clicking alert to viewing relevant Session Page',
           flow: 'Email Alert → Investigation Page → Session Page (bypasses dashboard)'
         } },
-        { id: 'lifecycle', feature: 'Alert Lifecycle Management (New → Acknowledged → Closed)', ga: true, gaRelease: '260', priority: 'P2', details: { 
+        { id: 'lifecycle', feature: 'Alert Lifecycle Management (New → Acknowledged → Closed)', beta: false, ga: true, gaRelease: '260', priority: 'P2', details: { 
           description: 'Alerts support status states (New → Acknowledged → Closed); users can manually update status in Events table.',
           jtbd: 'As an Agent Builder, I want to track the status of an alert so my team knows what is being investigated.',
           acceptanceCriteria: ['Alerts support status states: "New" → "Acknowledged" → "Closed"', 'Users can manually update the status of an alert in the Events table'],
           userPersona: 'Admin / Agent Builder',
           successMetric: 'Lifecycle Usage: % of alerts that move from "New" → "Acknowledged" (proving teams are using the workflow)'
         } },
-        { id: 'metric-bell', feature: 'Metric Page Integration (Red Bell Icon)', ga: true, gaRelease: '260', priority: 'P2', details: { 
+        { id: 'metric-bell', feature: 'Metric Page Integration (Red Bell Icon)', beta: false, ga: true, gaRelease: '260', priority: 'P2', details: { 
           description: 'Red bell icon on metric cards that have alerts with "New" or "Acknowledged" status. Create Alert button on Metric detail page opens modal with current metric pre-selected.',
           jtbd: 'As an Agent Builder, I want to see visual indicators on the Metric Page for metrics with active alerts and create an alert directly from this context so I don\'t have to navigate to settings manually.',
           acceptanceCriteria: ['Display red bell icon on metric cards with alerts in "New" or "Acknowledged" status', 'Clicking bell opens view showing only alerts for that metric', '"Create Alert" button visible on Metric detail page', 'Modal opens with current Metric pre-selected and default thresholds pre-filled'],
@@ -317,33 +425,19 @@ export default function FeatureComparison() {
       category: 'Setup Flow',
       icon: Zap,
       items: [
-        { id: 'setup-toggle', feature: 'Enablement Toggle in Setup Page', ga: true, gaRelease: '260', priority: 'P0', details: { 
-          description: 'Toggle in setup page for users to enable health monitoring (reusing STDM toggle or creating a new one).',
+        { id: 'setup-toggle', feature: 'Enablement Toggle in Setup Page', beta: false, ga: true, gaRelease: '262', priority: 'P0', details: { 
+          description: 'Include a toggle in the setup page for users to enable health monitoring. (TBD whether we reuse STDM toggle or make a new one).',
           jtbd: 'I want a simple control to turn on Agent Health Monitoring for my organization.',
           acceptanceCriteria: ['Include a toggle in the setup page for users to enable health monitoring (reusing STDM toggle or new one)'],
           userPersona: 'Admin',
           implementation: 'Single toggle control in Setup > Observability section'
         } },
-        { id: 'fre', feature: 'First Run Experience (FRE)', ga: true, gaRelease: '260', priority: 'P0', details: { 
-          description: 'Users without toggle enabled see onboarding UI guiding them on how to enable Agent Health Monitoring.',
-          jtbd: 'If I haven\'t enabled monitoring, I want to be guided to the setup page so I don\'t miss out on these capabilities.',
-          acceptanceCriteria: ['Users who do not have the toggle enabled see a UI (Beta FRE experience) guiding them on how to enable it'],
+        { id: 'fre', feature: 'First Run Experience (FRE)', beta: true, betaRelease: '258', ga: true, gaRelease: '260', priority: 'P0', details: {
+          description: 'In the first run experience (FRE), when a user has not yet enabled the Agent Monitoring toggle, the admin is given instructions on how to enable this, and a link to the Setup page where they can toggle this on.',
+          jtbd: 'A Salesforce admin can see instructions on how to enable Monitoring in the FRE.',
+          acceptanceCriteria: ['In the first run experience (FRE), when a user has not yet enabled the Agent Monitoring toggle, the admin is given instructions on how to enable this', 'Link to the Setup page where they can toggle this on'],
           userPersona: 'Admin',
           flow: 'Empty State UI → "Enable Health Monitoring" CTA → Setup Page → Toggle Activation'
-        } },
-      ]
-    },
-    {
-      category: 'Scalable Exports',
-      icon: Download,
-      items: [
-        { id: 'scalable-exports', feature: 'Enterprise-grade Export (Splunk/DataDog)', ga: true, gaRelease: '262', priority: 'P0', details: { 
-          description: 'Export within 5 minutes of data landing into Data Cloud. Handles large enterprise volumes without timeouts, validated in pre-GA large orgs.',
-          jtbd: 'I need a reliable method to export all agent health monitoring metrics to my external monitoring solution such as Splunk/DataDog.',
-          acceptanceCriteria: ['Data can be exported within 5 minutes of landing into Data Cloud', 'Export functionality handles large enterprise data volumes without timeouts; validated in pre-GA large org', 'Completion provides downloadable artifact and audit log entry', 'Failures show actionable errors and retry option'],
-          userPersona: 'Admin',
-          sla: '5 minutes from Data Cloud ingestion to export availability',
-          capabilities: ['Large volume handling', 'Audit trail', 'Error recovery with retry', 'Downloadable artifacts']
         } },
       ]
     },
@@ -351,16 +445,16 @@ export default function FeatureComparison() {
       category: 'Upgrade Path (Tableau Plus)',
       icon: ArrowUpCircle,
       items: [
-        { id: 'upgrade-experience', feature: 'In-Product Upgrade Experience', ga: true, gaRelease: '264', priority: 'P2', details: { 
-          description: 'Product experience for users to upgrade to Tableau Plus for advanced capabilities like dashboard customization (adding/removing metrics).',
+        { id: 'upgrade-experience', feature: 'In-Product Upgrade Experience', beta: false, ga: true, gaRelease: '264', priority: 'P2', details: { 
+          description: 'Product experience for users to upgrade and get Tableau Plus for features such as dashboard customization (adding/removing metrics).',
           jtbd: 'When I need advanced capabilities, I want a clear, in-product path to upgrade so I can unlock them without friction.',
           acceptanceCriteria: ['Gated capabilities (e.g., customization) show inline upgrade prompts'],
           userPersona: 'Admin / Agent Builder',
           gatedFeatures: ['Dashboard customization (add/remove metrics)', 'Advanced analytics', 'Custom visualizations'],
           dependency: 'Tableau Plus license'
         } },
-        { id: 'gating', feature: 'Gating for Advanced Capabilities', ga: true, gaRelease: '264', priority: 'P2', details: { 
-          description: 'All surfaces for gated features consistently display upgrade messaging if user lacks the required license.',
+        { id: 'gating', feature: 'Gating for Advanced Capabilities', beta: false, ga: true, gaRelease: '264', priority: 'P2', details: { 
+          description: 'All surfaces for these features should highlight an upgrade is required if the user does not have the right license.',
           acceptanceCriteria: ['If license is missing, all relevant surfaces consistently display upgrade messaging'],
           consistency: 'Uniform upgrade messaging across all gated feature touchpoints',
           examples: ['Dashboard customization page', 'Advanced metric configuration', 'Custom report builder']
@@ -371,8 +465,8 @@ export default function FeatureComparison() {
       category: 'Agentic Health Monitoring',
       icon: Sparkles,
       items: [
-        { id: 'agentic-qa', feature: 'Ask/Debug Experience via Obs Agent', ga: true, gaRelease: '266+', priority: 'P1', details: { 
-          description: 'Users can ask questions about alerts and dashboard in natural language and receive AI-powered contextual answers with suggested drill-downs.',
+        { id: 'agentic-qa', feature: 'Agentic Health Monitoring via Obs Agent', beta: false, ga: true, gaRelease: '266+', priority: 'P1', details: { 
+          description: 'Support agentic health monitoring experience where users can ask/debug alerts to understand their monitoring dashboard better. Via Obs Agent. (Tableau)',
           jtbd: 'I want to ask questions about my alerts and dashboard and get guided debugging assistance.',
           acceptanceCriteria: ['Users can pose questions (e.g., "Why did latency spike at 14:05?")', 'Receive contextual answers referencing current metrics and STDM logs', 'Provides suggested drill-downs (related metrics, time ranges)', 'Quick links to the Investigation Page'],
           userPersona: 'Admin / Agent Builder',
@@ -431,9 +525,13 @@ export default function FeatureComparison() {
   }
 
   const getFeatureCounts = () => {
+    let beta = 0
     let ga = 0
-    features.forEach(cat => cat.items.forEach(item => { if (item.ga) ga++ }))
-    return { ga }
+    features.forEach(cat => cat.items.forEach(item => {
+      if (item.beta) beta++
+      if (item.ga) ga++
+    }))
+    return { beta, ga }
   }
 
   const counts = getFeatureCounts()
@@ -457,15 +555,27 @@ export default function FeatureComparison() {
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-4">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-emerald-600" />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+              <span className="text-amber-600 font-bold text-sm">β</span>
+            </div>
+            <span className="font-semibold text-amber-800">Beta (258-260)</span>
           </div>
-          <span className="font-semibold text-emerald-800">GA Features (260+)</span>
+          <p className="text-3xl font-bold text-amber-900">{counts.beta}</p>
+          <p className="text-sm text-amber-700">Features</p>
         </div>
+        <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-emerald-600" />
+            </div>
+            <span className="font-semibold text-emerald-800">GA Features (260+)</span>
+          </div>
           <p className="text-3xl font-bold text-emerald-900">{counts.ga}</p>
           <p className="text-sm text-emerald-700">Total Features</p>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -492,6 +602,7 @@ export default function FeatureComparison() {
             <table className="w-full">
               <thead><tr className="border-b border-gray-200">
                 <th className="text-left p-4 text-sm font-medium text-gray-500 w-5/12">Feature</th>
+                <th className="text-center p-4 text-sm font-medium w-2/12"><span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 rounded">β Beta</span></th>
                 <th className="text-center p-4 text-sm font-medium w-2/12"><span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded">🎯 Priority</span></th>
                 <th className="text-center p-4 text-sm font-medium w-3/12"><span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-100 text-emerald-700 rounded">🚀 GA Release</span></th>
               </tr></thead>
@@ -502,12 +613,13 @@ export default function FeatureComparison() {
                     <Fragment key={item.id}>
                       <tr className={`border-b border-gray-100 last:border-0 cursor-pointer transition-colors ${expandedFeature === item.id ? 'bg-blue-50' : editMode ? 'bg-orange-50/30 hover:bg-orange-50' : 'hover:bg-gray-50'}`} onClick={() => !editMode && setExpandedFeature(expandedFeature === item.id ? null : item.id)}>
                         <td className="p-4 text-sm text-gray-700"><div className="flex items-center gap-2">{!editMode && (expandedFeature === item.id ? <ChevronUp className="w-4 h-4 text-blue-500" /> : <ChevronDown className="w-4 h-4 text-gray-400" />)}<span>{item.feature}</span></div></td>
+                        <td className="p-4 text-center">{item.beta ? <div className="flex items-center justify-center"><CheckCircle2 className="w-5 h-5 text-amber-500" /><span className="text-xs text-amber-600 ml-1">{item.betaRelease || '258'}</span></div> : <XCircle className="w-5 h-5 text-gray-300 mx-auto" />}</td>
                         <td className="p-4 text-center">{item.priority && <PriorityBadge priority={item.priority} editable={editMode} onChange={(p) => updateFeaturePriority(categoryIndex, itemIndex, p)} />}</td>
                         <td className="p-4 text-center">{item.ga ? <div className="flex items-center justify-center gap-1"><CheckCircle2 className="w-5 h-5 text-green-500" />{editMode ? <ReleaseBadge release={item.gaRelease || '260'} editable={true} onChange={(r) => updateFeatureRelease(categoryIndex, itemIndex, r)} /> : (item.gaRelease && <span className="text-xs text-gray-400">{item.gaRelease}</span>)}</div> : <XCircle className="w-5 h-5 text-gray-300 mx-auto" />}</td>
                       </tr>
                       {!editMode && expandedFeature === item.id && item.details && (
                         <tr>
-                          <td colSpan={3} className="p-0">
+                          <td colSpan={4} className="p-0">
                             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-t border-blue-200 p-6 space-y-4">
                               {/* Description */}
                               <div>

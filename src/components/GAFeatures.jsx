@@ -1,24 +1,25 @@
 import { useState, useEffect, useRef } from 'react'
-import { Search, Bell, Sliders, TrendingUp, MessageSquare, Sparkles, ChevronRight, Clock, AlertTriangle, CheckCircle2, XCircle, Play, FileSearch, Users, Mail, Hash, Zap, ArrowUpRight, Plus, Trash2, ExternalLink, Send, Bot, LineChart, BarChart3, Activity, Layout, RefreshCw, Filter, ChevronDown, Settings, Calendar, Info, Download, Eye, Database, List, ArrowUpCircle, Globe, Server, Edit, MoreVertical, ArrowRight } from 'lucide-react'
-import { AreaChart, Area, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, Legend } from 'recharts'
+import { Search, Bell, Sliders, TrendingUp, MessageSquare, Sparkles, ChevronRight, Clock, AlertTriangle, CheckCircle2, XCircle, Play, FileSearch, Users, Mail, Hash, Zap, ArrowUpRight, Plus, Trash2, ExternalLink, Send, Bot, LineChart as LineChartIcon, BarChart3, Activity, Layout, RefreshCw, Filter, ChevronDown, Settings, Calendar, Info, Download, Eye, Database, List, ArrowUpCircle, Globe, Server, Edit, MoreVertical, ArrowRight } from 'lucide-react'
+import AHMDiagram from './AHMDiagram'
+import { AreaChart, Area, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts'
 
 export default function GAFeatures() {
   const [activeSection, setActiveSection] = useState('prototype')
 
   const sections = [
     { id: 'prototype', icon: Layout, label: 'Prototype', priority: 'ALL', release: 'ALL' },
+    { id: 'diagram', icon: BarChart3, label: 'Alert to Investigation', priority: 'ALL', release: 'ALL' },
     { id: 'journey', icon: Users, label: 'User Journey', priority: 'ALL', release: 'ALL' },
     { id: 'investigation', icon: FileSearch, label: 'Investigation Page', priority: 'P0', release: '260' },
-    { id: 'reroute', icon: ArrowUpRight, label: 'Reroute to Agent Builder', priority: 'P0', release: '260' },
+    { id: 'reroute', icon: ArrowUpRight, label: 'Reroute to Agent Builder & Tools', priority: 'P0', release: '260' },
     { id: 'dmo', icon: Database, label: 'Efficiency/Scalability', priority: 'P0', release: '260' },
     { id: 'metrics', icon: BarChart3, label: 'OOTB & Custom Metrics', priority: 'P0', release: '260' },
-    { id: 'availability', icon: Activity, label: 'Agent Availability', priority: 'P0', release: '260' },
-    { id: 'alerting', icon: Bell, label: 'Alerting Improvements', priority: 'P0', release: '260-264' },
-    { id: 'events', icon: List, label: 'Events & Rules', priority: 'P0', release: '260' },
-    { id: 'setup', icon: Zap, label: 'Setup Flow', priority: 'P0', release: '260' },
-    { id: 'exports', icon: Download, label: 'Scalable Exports', priority: 'P0', release: '262' },
+    { id: 'availability', icon: Activity, label: 'Agent & Channel Availability', priority: 'P0', release: '260' },
+    { id: 'enhance', icon: List, label: 'Enhanced Experience', priority: 'P0', release: '260' },
+    { id: 'alerting', icon: Bell, label: 'Alerting Improvements', priority: 'P0-P2', release: '262' },
+    { id: 'setup', icon: Zap, label: 'Setup Flow', priority: 'P0', release: '262' },
     { id: 'upgrade', icon: ArrowUpCircle, label: 'Upgrade Path', priority: 'P2', release: '264' },
-    { id: 'agentic', icon: Sparkles, label: 'Agentic Monitoring', priority: 'P1', release: '266+' },
+    { id: 'agentic', icon: Sparkles, label: 'Agentic Health Monitoring', priority: 'P1', release: '266+' },
   ]
 
   return (
@@ -29,9 +30,11 @@ export default function GAFeatures() {
             <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded">GA</span>
             <span className="text-gray-400">•</span>
             <span className="text-sm text-gray-500">Release 260 - 266+</span>
+            <span className="text-gray-400">•</span>
+            <span className="text-xs text-gray-500">Author: Maor Pichadze | Last Update: Jan 26, 2025 | Status: Draft</span>
           </div>
           <h2 className="text-2xl font-bold text-gray-900">GA Feature Showcase</h2>
-          <p className="text-gray-500 mt-1">Enhanced capabilities for production-ready agent monitoring</p>
+          <p className="text-gray-500 mt-1">Native, scalable solution embedded in Agentforce Observability — P0 (Must), P1 (Should), P2 (Nice to Have)</p>
         </div>
       </div>
 
@@ -59,7 +62,7 @@ export default function GAFeatures() {
             if (priority === 'P0') return 'bg-red-100 text-red-700'
             if (priority === 'P1') return 'bg-amber-100 text-amber-700'
             if (priority === 'P2') return 'bg-gray-100 text-gray-600'
-            if (priority === 'P0-P1') return 'bg-orange-100 text-orange-700'
+            if (priority === 'P0-P1' || priority === 'P0-P2') return 'bg-orange-100 text-orange-700'
             return 'bg-gray-100 text-gray-600'
           }
           return (
@@ -73,6 +76,7 @@ export default function GAFeatures() {
       </div>
 
       {activeSection === 'prototype' && <GAPrototype />}
+      {activeSection === 'diagram' && <AHMDiagram />}
       {activeSection === 'journey' && <UserJourney />}
       {activeSection === 'investigation' && <InvestigationPage />}
       {activeSection === 'reroute' && <RerouteToAgentBuilder />}
@@ -80,9 +84,8 @@ export default function GAFeatures() {
       {activeSection === 'metrics' && <OOTBMetrics />}
       {activeSection === 'availability' && <AgentAvailability />}
       {activeSection === 'alerting' && <EnhancedAlerting />}
-      {activeSection === 'events' && <EventsDetectors />}
+      {activeSection === 'enhance' && <EventsDetectors />}
       {activeSection === 'setup' && <SetupOnboarding />}
-      {activeSection === 'exports' && <ScalableExports />}
       {activeSection === 'upgrade' && <UpgradePath />}
       {activeSection === 'agentic' && <AgenticMonitoring />}
     </div>
@@ -165,6 +168,21 @@ function GAPrototype() {
   const topicsData = [{ name: 'Topic A', value: 35, color: '#0176D3' }, { name: 'Topic BBBBB', value: 25, color: '#2E844A' }, { name: 'Topic CC', value: 40, color: '#DD7A01' }]
   const actionsData = [{ name: 'Nadia Warren', value: 15, color: '#0176D3' }, { name: 'Savannah Nguyen', value: 20, color: '#2E844A' }, { name: 'Ronald Richards', value: 10, color: '#DD7A01' }, { name: 'Jane Cooper', value: 15, color: '#9F1AB1' }, { name: 'Leslie Alexander', value: 12, color: '#0B827C' }, { name: 'Courtney Henry', value: 18, color: '#AA2E25' }, { name: 'Bessie Cooper', value: 10, color: '#5C6BC0' }]
   const channelsData = [{ name: 'Web Chat', value: 45, color: '#0176D3' }, { name: 'Email', value: 30, color: '#2E844A' }, { name: 'SMS', value: 25, color: '#DD7A01' }]
+  
+  // Metric trend data for line chart (based on alert type)
+  const metricTrendData = [
+    { date: 'Jan 26', value: 9.60, p50: 8.2, p75: 9.1, p95: 10.5, p99: 11.2 },
+    { date: 'Jan 27', value: 10.91, p50: 9.5, p75: 10.2, p95: 11.8, p99: 12.5 },
+    { date: 'Jan 28', value: 10.45, p50: 9.1, p75: 10.0, p95: 11.2, p99: 11.9 },
+    { date: 'Jan 29', value: 11.20, p50: 9.8, p75: 10.6, p95: 12.1, p99: 12.8 },
+    { date: 'Jan 30', value: 10.85, p50: 9.4, p75: 10.3, p95: 11.7, p99: 12.4 },
+    { date: 'Jan 31', value: 10.50, p50: 9.2, p75: 10.1, p95: 11.4, p99: 12.1 },
+    { date: 'Feb 1', value: 10.75, p50: 9.6, p75: 10.4, p95: 11.9, p99: 12.6 },
+    { date: 'Feb 2', value: 10.28, p50: 9.0, p75: 9.8, p95: 11.0, p99: 11.7 }
+  ]
+  
+  // Calculate 7-day average
+  const avg7Days = (metricTrendData.reduce((sum, d) => sum + d.value, 0) / metricTrendData.length).toFixed(2)
   
   // Data for tables (like Investigation Page)
   const errorsByTopic = [
@@ -621,18 +639,71 @@ function GAPrototype() {
                 <div className="text-center mt-2"><span className="text-2xl font-bold text-gray-900">7</span></div>
               </div>
               <div className="bg-white rounded-lg border border-gray-200 p-4">
-                <h4 className="text-sm font-medium text-gray-700 mb-3">Channels</h4>
+                <h4 className="text-sm font-medium text-gray-700 mb-3">{selectedAlert.metric}</h4>
+                <div className="text-center mb-2">
+                  <span className="text-2xl font-bold text-gray-900">{avg7Days}%</span>
+                  <div className="text-xs text-gray-500">7-day average</div>
+                </div>
                 <div className="h-40">
                   <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie data={channelsData} cx="50%" cy="50%" innerRadius={35} outerRadius={55} paddingAngle={2} dataKey="value" label={false}>
-                        {channelsData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                      </Pie>
-                      <Legend layout="vertical" align="right" verticalAlign="middle" iconSize={8} formatter={(value) => <span className="text-xs text-gray-600">{value}</span>} />
-                    </PieChart>
+                    <LineChart data={metricTrendData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                      <XAxis 
+                        dataKey="date" 
+                        tick={{ fontSize: 10 }} 
+                        tickLine={false}
+                        axisLine={{ stroke: '#e5e7eb' }}
+                      />
+                      <YAxis 
+                        tick={{ fontSize: 10 }} 
+                        tickLine={false}
+                        axisLine={{ stroke: '#e5e7eb' }}
+                        domain={['dataMin - 1', 'dataMax + 1']}
+                      />
+                      <Tooltip 
+                        content={({ active, payload }) => {
+                          if (active && payload && payload.length) {
+                            const data = payload[0].payload
+                            return (
+                              <div className="bg-white border border-gray-300 rounded-lg p-3 shadow-lg">
+                                <div className="font-semibold text-gray-900 mb-1">{selectedAlert.metric}</div>
+                                <div className="text-sm text-gray-700 mb-2">{data.value}%</div>
+                                <div className="text-xs text-gray-600 mb-1">Day: {data.date}</div>
+                                <div className="border-t border-gray-200 pt-2 mt-2 space-y-1">
+                                  <div className="flex justify-between text-xs">
+                                    <span className="text-gray-500">p50:</span>
+                                    <span className="font-medium text-gray-700">{data.p50}%</span>
+                                  </div>
+                                  <div className="flex justify-between text-xs">
+                                    <span className="text-gray-500">p75:</span>
+                                    <span className="font-medium text-gray-700">{data.p75}%</span>
+                                  </div>
+                                  <div className="flex justify-between text-xs">
+                                    <span className="text-gray-500">p95:</span>
+                                    <span className="font-medium text-gray-700">{data.p95}%</span>
+                                  </div>
+                                  <div className="flex justify-between text-xs">
+                                    <span className="text-gray-500">p99:</span>
+                                    <span className="font-medium text-gray-700">{data.p99}%</span>
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          }
+                          return null
+                        }}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke="#4F46E5" 
+                        strokeWidth={2}
+                        dot={{ fill: '#4F46E5', r: 4 }}
+                        activeDot={{ r: 6 }}
+                      />
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
-                <div className="text-center mt-2"><span className="text-2xl font-bold text-gray-900">5</span></div>
               </div>
             </div>
           </div>
@@ -683,11 +754,11 @@ function GAPrototype() {
             </div>
           </div>
 
-          {/* Errors by Step Table */}
+          {/* Errors by Session Table */}
           <div className="p-6 border-t border-gray-200">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-semibold text-gray-900">Errors by Step</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Errors by Session</h3>
                 <ReleaseBadge release="260" />
                 <PriorityBadge priority="P0" />
               </div>
@@ -1466,7 +1537,7 @@ function UserJourney() {
                         <span className="font-semibold text-gray-700">1. Attributes:</span> Metric, Name, Description, Agent Selection
                       </div>
                       <div className="bg-white border border-emerald-300 rounded p-2 text-xs">
-                        <span className="font-semibold text-gray-700">2. Parameters:</span> Condition, Threshold, Time Frame <button className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">Test Parameters</button>
+                        <span className="font-semibold text-gray-700">2. Parameters:</span> Condition, Threshold, Time Frame (with metric context: 7-day avg, p50, p95, p99)
                       </div>
                       <div className="bg-white border border-amber-300 rounded p-2 text-xs">
                         <span className="font-semibold text-gray-700">3. Severity:</span> Critical / High / Medium <ReleaseBadge release="262" /><PriorityBadge priority="P1" />
@@ -1602,7 +1673,7 @@ function UserJourney() {
                         <strong>Topics by Agent</strong> (errors by topic table)
                       </div>
                       <div className="bg-white border border-gray-300 rounded p-2 text-xs">
-                        <strong>Errors by Step</strong> (with Optimizer deep links <PriorityBadge priority="P2" />)
+                        <strong>Errors by Session</strong> (with Optimizer deep links <PriorityBadge priority="P2" />)
                       </div>
                       <div className="bg-white border border-gray-300 rounded p-2 text-xs">
                         <strong>Blast Radius</strong> (Channel, Agent Type, Agents)
@@ -2019,6 +2090,8 @@ function CreateAlertModal({ event, rule, onClose }) {
   const [agentApiName, setAgentApiName] = useState(rule?.agentApiName || '')
   const [agentType, setAgentType] = useState(rule?.agentType || '')
   const [alertMethod, setAlertMethod] = useState(event?.alertMethod || 'threshold')
+  const [notificationChannel, setNotificationChannel] = useState('email-me')
+  const [recipientValue, setRecipientValue] = useState('')
 
   // Recommend alert method based on metric selection
   const getRecommendedMethod = (selectedMetric) => {
@@ -2326,9 +2399,62 @@ function CreateAlertModal({ event, rule, onClose }) {
               </div>
             )}
 
-            <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded-full text-sm font-medium hover:bg-blue-50">
-              Test Parameters
-            </button>
+            {/* Metric Context — helps users set informed thresholds */}
+            <div className="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+              <div className="flex items-center gap-2 mb-3">
+                <Info className="w-4 h-4 text-slate-500" />
+                <span className="text-sm font-semibold text-slate-700">Your metric data</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">7-day avg</div>
+                  <div className="text-lg font-semibold text-slate-900">
+                    {metric === 'error-rate' && '2.1%'}
+                    {metric === 'latency' && '1.2s'}
+                    {metric === 'escalation' && '10.5%'}
+                    {metric === 'deflection' && '8.3%'}
+                    {metric === 'abandonment' && '4.2%'}
+                    {!['error-rate','latency','escalation','deflection','abandonment'].includes(metric) && '—'}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">p50</div>
+                  <div className="text-sm font-medium text-slate-700">
+                    {metric === 'error-rate' && '1.8%'}
+                    {metric === 'latency' && '0.9s'}
+                    {metric === 'escalation' && '9.2%'}
+                    {metric === 'deflection' && '7.1%'}
+                    {metric === 'abandonment' && '3.5%'}
+                    {!['error-rate','latency','escalation','deflection','abandonment'].includes(metric) && '—'}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">p95</div>
+                  <div className="text-sm font-medium text-slate-700">
+                    {metric === 'error-rate' && '3.8%'}
+                    {metric === 'latency' && '2.1s'}
+                    {metric === 'escalation' && '12.4%'}
+                    {metric === 'deflection' && '10.2%'}
+                    {metric === 'abandonment' && '6.1%'}
+                    {!['error-rate','latency','escalation','deflection','abandonment'].includes(metric) && '—'}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wide mb-0.5">p99</div>
+                  <div className="text-sm font-medium text-slate-700">
+                    {metric === 'error-rate' && '5.2%'}
+                    {metric === 'latency' && '3.4s'}
+                    {metric === 'escalation' && '14.1%'}
+                    {metric === 'deflection' && '11.8%'}
+                    {metric === 'abandonment' && '7.5%'}
+                    {!['error-rate','latency','escalation','deflection','abandonment'].includes(metric) && '—'}
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 mt-3 pt-3 border-t border-slate-200">
+                <strong>Typical use:</strong> We usually alert on <strong>p95</strong> for tail behavior; use <strong>p99</strong> for stricter, fewer alerts.
+              </p>
+            </div>
         </div>
 
           {/* Severity Section */}
@@ -2365,41 +2491,74 @@ function CreateAlertModal({ event, rule, onClose }) {
               <PriorityBadge priority="P0" />
             </div>
             <div>
-              <label className="block text-sm font-normal text-gray-700 mb-1">
-                <span className="text-red-500 mr-1">*</span>Notification Channels
+              <label className="block text-sm font-normal text-gray-700 mb-2">
+                <span className="text-red-500 mr-1">*</span>Notification Channel
               </label>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                  <span className="text-sm text-gray-700">Email (me)</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" className="rounded border-gray-300" />
-                  <span className="text-sm text-gray-700">Email Distribution List</span>
-                  <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded">P0 - 262</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" className="rounded border-gray-300" />
-                  <span className="text-sm text-gray-700">Slack Channel</span>
-                  <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-xs rounded">P1 - 262</span>
-                </label>
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" className="rounded border-gray-300" />
-                  <span className="text-sm text-gray-700">Webhook/API</span>
-                  <span className="px-1.5 py-0.5 bg-amber-100 text-amber-700 text-xs rounded">P1 - 262</span>
-                </label>
-        </div>
-      </div>
+              <div className="space-y-2" role="radiogroup" aria-label="Notification channel">
+                {[
+                  { id: 'email-me', label: 'Email (me)', badge: null },
+                  { id: 'email-dl', label: 'Email Distribution List', badge: 'P0 - 262' },
+                  { id: 'slack', label: 'Slack Channel', badge: 'P1 - 262' },
+                  { id: 'webhook', label: 'Webhook/API', badge: 'P1 - 262' },
+                ].map((ch) => (
+                  <label
+                    key={ch.id}
+                    className={`flex items-center gap-3 cursor-pointer p-2.5 rounded-lg border transition-all ${
+                      notificationChannel === ch.id
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-transparent hover:bg-gray-50 hover:border-gray-200'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="notificationChannel"
+                      value={ch.id}
+                      checked={notificationChannel === ch.id}
+                      onChange={() => {
+                        setNotificationChannel(ch.id)
+                        setRecipientValue('')
+                      }}
+                      className="w-4 h-4 border-gray-300 text-blue-600 focus:ring-blue-500 accent-blue-600"
+                    />
+                    <span className="text-sm font-medium text-gray-700">{ch.label}</span>
+                    {ch.badge && (
+                      <span className={`px-1.5 py-0.5 text-xs rounded ${ch.id === 'email-dl' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                        {ch.badge}
+                      </span>
+                    )}
+                  </label>
+                ))}
+              </div>
+            </div>
 
-            <div>
-              <label className="block text-sm font-normal text-gray-700 mb-1">Recipients</label>
-              <input 
-                type="text"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter email addresses..."
-              />
-        </div>
-      </div>
+            {notificationChannel !== 'email-me' && (
+              <div>
+                <label className="block text-sm font-normal text-gray-700 mb-1">
+                  <span className="text-red-500 mr-1">*</span>Recipients
+                </label>
+                <input 
+                  type="text"
+                  value={recipientValue}
+                  onChange={(e) => setRecipientValue(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder={
+                    notificationChannel === 'email-dl' ? 'e.g., team-alerts@company.com, oncall@company.com' :
+                    notificationChannel === 'slack' ? 'e.g., #agent-alerts or channel ID' :
+                    'e.g., https://hooks.slack.com/... or PagerDuty/ServiceNow URL'
+                  }
+                />
+                {notificationChannel === 'email-dl' && (
+                  <p className="text-xs text-gray-500 mt-1">Comma-separated email addresses or distribution list</p>
+                )}
+                {notificationChannel === 'slack' && (
+                  <p className="text-xs text-gray-500 mt-1">Channel name (e.g., #alerts) or Slack channel ID</p>
+                )}
+                {notificationChannel === 'webhook' && (
+                  <p className="text-xs text-gray-500 mt-1">URL for PagerDuty, ServiceNow, or custom webhook</p>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Cooldown Section */}
           <div className="space-y-4">
@@ -2471,11 +2630,40 @@ function InvestigationPage() {
   const [selectedSession, setSelectedSession] = useState(null)
   const [selectedTopic, setSelectedTopic] = useState(null)
   const [activeSidebarTab, setActiveSidebarTab] = useState('Topics')
+  const [selectedChartPoint, setSelectedChartPoint] = useState(null)
+  const [showAgentBreakdown, setShowAgentBreakdown] = useState(false)
+  const [sessionFilters, setSessionFilters] = useState({
+    agent: 'All',
+    channel: 'All',
+    error: 'All',
+    search: ''
+  })
+  const [showSessionFilters, setShowSessionFilters] = useState(false)
   
   // Same pie chart data as GAPrototype
   const topicsData = [{ name: 'Topic A', value: 35, color: '#0176D3' }, { name: 'Topic BBBBB', value: 25, color: '#2E844A' }, { name: 'Topic CC', value: 40, color: '#DD7A01' }]
   const actionsData = [{ name: 'Nadia Warren', value: 15, color: '#0176D3' }, { name: 'Savannah Nguyen', value: 20, color: '#2E844A' }, { name: 'Ronald Richards', value: 10, color: '#DD7A01' }, { name: 'Jane Cooper', value: 15, color: '#9F1AB1' }, { name: 'Leslie Alexander', value: 12, color: '#0B827C' }, { name: 'Courtney Henry', value: 18, color: '#AA2E25' }, { name: 'Bessie Cooper', value: 10, color: '#5C6BC0' }]
   const channelsData = [{ name: 'Web Chat', value: 45, color: '#0176D3' }, { name: 'Email', value: 30, color: '#2E844A' }, { name: 'SMS', value: 25, color: '#DD7A01' }]
+  
+  // Metric trend data for line chart (replaces Channels in Blast Radius)
+  const metricTrendDataInv = [
+    { date: 'Jan 26', value: 9.60, p50: 8.2, p75: 9.1, p95: 10.5, p99: 11.2 },
+    { date: 'Jan 27', value: 10.91, p50: 9.5, p75: 10.2, p95: 11.8, p99: 12.5 },
+    { date: 'Jan 28', value: 10.45, p50: 9.1, p75: 10.0, p95: 11.2, p99: 11.9 },
+    { date: 'Jan 29', value: 11.20, p50: 9.8, p75: 10.6, p95: 12.1, p99: 12.8 },
+    { date: 'Jan 30', value: 10.85, p50: 9.4, p75: 10.3, p95: 11.7, p99: 12.4 },
+    { date: 'Jan 31', value: 10.50, p50: 9.2, p75: 10.1, p95: 11.4, p99: 12.1 },
+    { date: 'Feb 1', value: 10.75, p50: 9.6, p75: 10.4, p95: 11.9, p99: 12.6 },
+    { date: 'Feb 2', value: 10.28, p50: 9.0, p75: 9.8, p95: 11.0, p99: 11.7 }
+  ]
+  const avg7DaysInv = (metricTrendDataInv.reduce((sum, d) => sum + d.value, 0) / metricTrendDataInv.length).toFixed(2)
+  
+  // Agent breakdown data for clicked chart point
+  const agentBreakdownData = selectedChartPoint ? [
+    { agentName: 'Service Cloud Agent', p50: 8.1, p75: 9.0, p95: 10.2, p99: 11.0, value: 9.5 },
+    { agentName: 'Sales Assistant', p50: 9.2, p75: 10.1, p95: 11.5, p99: 12.3, value: 10.8 },
+    { agentName: 'IT Support Bot', p50: 7.8, p75: 8.7, p95: 9.9, p99: 10.7, value: 9.1 },
+  ] : []
   
   // Same table data as GAPrototype
   const errorsByTopic = [
@@ -2489,6 +2677,31 @@ function InvestigationPage() {
     { stepName: 'UpdateCase', stepType: 'Action Execution', error: 'Permission Denied', count: 8, timestamp: '10:15:12 AM' },
     { stepName: 'SendNotification', stepType: 'Action Execution', error: 'Missing Input', count: 5, timestamp: '10:15:05 AM' },
   ]
+  
+  // Sessions data
+  const allSessions = [
+    { sessionId: 'sess-001', agentName: 'Service Cloud Agent', agentType: 'Service Agent', channel: 'Web Chat', error: 'LLM Error', timestamp: '10:15:23 AM', duration: '4m 32s', status: 'Failed' },
+    { sessionId: 'sess-002', agentName: 'Service Cloud Agent', agentType: 'Service Agent', channel: 'Web Chat', error: 'RAG Timeout', timestamp: '10:15:18 AM', duration: '2m 15s', status: 'Failed' },
+    { sessionId: 'sess-003', agentName: 'Sales Assistant', agentType: 'Sales Agent', channel: 'Email', error: 'Action Failed', timestamp: '10:15:12 AM', duration: '1m 48s', status: 'Failed' },
+    { sessionId: 'sess-004', agentName: 'Service Cloud Agent', agentType: 'Service Agent', channel: 'SMS', error: 'LLM Error', timestamp: '10:15:05 AM', duration: '3m 22s', status: 'Failed' },
+    { sessionId: 'sess-005', agentName: 'IT Support Bot', agentType: 'Support Agent', channel: 'Web Chat', error: 'Rate Limit Exceeded', timestamp: '10:14:58 AM', duration: '5m 10s', status: 'Failed' },
+    { sessionId: 'sess-006', agentName: 'Service Cloud Agent', agentType: 'Service Agent', channel: 'Web Chat', error: 'LLM Error', timestamp: '10:14:45 AM', duration: '2m 55s', status: 'Failed' },
+  ]
+  
+  // Filter sessions based on filters
+  const filteredSessions = allSessions.filter(session => {
+    if (sessionFilters.agent !== 'All' && session.agentName !== sessionFilters.agent) return false
+    if (sessionFilters.channel !== 'All' && session.channel !== sessionFilters.channel) return false
+    if (sessionFilters.error !== 'All' && session.error !== sessionFilters.error) return false
+    if (sessionFilters.search && !session.sessionId.toLowerCase().includes(sessionFilters.search.toLowerCase()) && 
+        !session.agentName.toLowerCase().includes(sessionFilters.search.toLowerCase())) return false
+    return true
+  })
+  
+  // Get unique values for filter dropdowns
+  const uniqueAgents = [...new Set(allSessions.map(s => s.agentName))]
+  const uniqueChannels = [...new Set(allSessions.map(s => s.channel))]
+  const uniqueErrors = [...new Set(allSessions.map(s => s.error))]
 
   // Agent Builder View for Investigation Page
   if (selectedTopic) {
@@ -2594,29 +2807,52 @@ function InvestigationPage() {
     )
   }
   
+  // Session detail view (when user clicks a session from the table)
+  if (selectedSession) {
+    return (
+      <div className="space-y-4">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="px-4 py-3 border-b border-gray-200 flex items-center text-sm">
+            <span className="text-gray-500 hover:text-gray-700 cursor-pointer" onClick={() => setSelectedSession(null)}>Investigation</span>
+            <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
+            <span className="font-medium text-gray-800">Session: {selectedSession.id}</span>
+          </div>
+          <div className="px-6 py-8 text-center">
+            <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Session Details</h3>
+            <p className="text-sm text-gray-600 mb-4">Session ID: {selectedSession.id}</p>
+            <button onClick={() => setSelectedSession(null)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+              Back to Investigation
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 min-h-[400px]">
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm border-2 border-emerald-300 p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <AlertTriangle className="w-6 h-6 text-red-600" />
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Alert: Error Rate Spike</h2>
-              <p className="text-sm text-gray-500">Agent Error Rate exceeded 5% threshold at 10:15 AM</p>
-        </div>
+              <h2 className="text-xl font-bold text-gray-900">Investigation Page for Health Monitoring Alerts (STDM)</h2>
+              <p className="text-sm text-gray-500">Agent Error Rate exceeded 5% threshold at 10:15 AM — Topics, Agents, Actions, Sessions, Steps</p>
+            </div>
             <ReleaseBadge release="260" /><PriorityBadge priority="P0" />
-      </div>
+          </div>
           <div className="flex items-center gap-2">
             <select value={timeWindow} onChange={(e) => setTimeWindow(e.target.value)} className="border border-gray-200 rounded-lg px-3 py-2 text-sm">
               <option value="5min">5 minutes (Alert Window)</option>
               <option value="15min">15 minutes</option>
               <option value="1h">1 hour</option>
             </select>
-            <span className="text-xs text-gray-500">Auto-focused on alert window</span>
+            <span className="text-xs text-gray-500">Page focused on specific time window (5 min) within which alert fired</span>
             <ReleaseBadge release="262" /><PriorityBadge priority="P1" />
-              </div>
-            </div>
+          </div>
+        </div>
       </div>
 
       {/* Blast Radius - Pie Charts (same as GAPrototype) */}
@@ -2655,18 +2891,64 @@ function InvestigationPage() {
             <div className="text-center mt-2"><span className="text-2xl font-bold text-gray-900">7</span></div>
           </div>
           <div className="bg-white rounded-lg border border-gray-200 p-4">
-            <h4 className="text-sm font-medium text-gray-700 mb-3">Channels</h4>
-            <div className="h-40">
+            <h4 className="text-sm font-medium text-gray-700 mb-3">Escalation Rate</h4>
+            <div className="text-center mb-2">
+              <span className="text-2xl font-bold text-gray-900">{avg7DaysInv}%</span>
+              <div className="text-xs text-gray-500">7-day average</div>
+            </div>
+            <div className="h-40 cursor-pointer">
               <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={channelsData} cx="50%" cy="50%" innerRadius={35} outerRadius={55} paddingAngle={2} dataKey="value" label={false}>
-                    {channelsData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
-                  </Pie>
-                  <Legend layout="vertical" align="right" verticalAlign="middle" iconSize={8} formatter={(value) => <span className="text-xs text-gray-600">{value}</span>} />
-                </PieChart>
+                <LineChart 
+                  data={metricTrendDataInv}
+                  onClick={(e) => {
+                    try {
+                      if (e?.activePayload?.[0]?.payload) {
+                        setSelectedChartPoint(e.activePayload[0].payload)
+                        setShowAgentBreakdown(true)
+                      }
+                    } catch (_) {}
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="date" tick={{ fontSize: 10 }} tickLine={false} axisLine={{ stroke: '#e5e7eb' }} />
+                  <YAxis tick={{ fontSize: 10 }} tickLine={false} axisLine={{ stroke: '#e5e7eb' }} domain={['dataMin - 1', 'dataMax + 1']} />
+                  <Tooltip 
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload
+                        return (
+                          <div className="bg-white border border-gray-300 rounded-lg p-3 shadow-lg cursor-pointer" onClick={() => {
+                            setSelectedChartPoint(data)
+                            setShowAgentBreakdown(true)
+                          }}>
+                            <div className="font-semibold text-gray-900 mb-1">Escalation Rate</div>
+                            <div className="text-sm text-gray-700 mb-2">{data.value}%</div>
+                            <div className="text-xs text-gray-600 mb-1">Day: {data.date}</div>
+                            <div className="border-t border-gray-200 pt-2 mt-2 space-y-1">
+                              <div className="flex justify-between text-xs"><span className="text-gray-500">p50:</span><span className="font-medium text-gray-700">{data.p50}%</span></div>
+                              <div className="flex justify-between text-xs"><span className="text-gray-500">p75:</span><span className="font-medium text-gray-700">{data.p75}%</span></div>
+                              <div className="flex justify-between text-xs"><span className="text-gray-500">p95:</span><span className="font-medium text-gray-700">{data.p95}%</span></div>
+                              <div className="flex justify-between text-xs"><span className="text-gray-500">p99:</span><span className="font-medium text-gray-700">{data.p99}%</span></div>
+                            </div>
+                            <div className="text-xs text-blue-600 mt-2 pt-2 border-t border-gray-200 font-medium">Click to view breakdown by Agent</div>
+                          </div>
+                        )
+                      }
+                      return null
+                    }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="value" 
+                    stroke="#4F46E5" 
+                    strokeWidth={2} 
+                    dot={{ fill: '#4F46E5', r: 4, cursor: 'pointer' }} 
+                    activeDot={{ r: 6, cursor: 'pointer' }} 
+                  />
+                </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="text-center mt-2"><span className="text-2xl font-bold text-gray-900">3</span></div>
+            <div className="text-xs text-gray-500 text-center mt-1">Click chart point or tooltip to view breakdown by Agent</div>
           </div>
         </div>
       </div>
@@ -2716,11 +2998,163 @@ function InvestigationPage() {
         </div>
       </div>
 
-      {/* Errors by Step Table */}
+      {/* Sessions Table with Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold text-gray-900">Errors by Step</h3>
+            <h3 className="text-lg font-semibold text-gray-900">Sessions</h3>
+            <ReleaseBadge release="260" /><PriorityBadge priority="P0" />
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input 
+                type="text" 
+                placeholder="Search sessions..." 
+                value={sessionFilters.search}
+                onChange={(e) => setSessionFilters({...sessionFilters, search: e.target.value})}
+                className="pl-9 pr-4 py-1.5 border border-gray-300 rounded-lg text-sm w-64 focus:outline-none focus:border-blue-500" 
+              />
+            </div>
+            <button 
+              onClick={() => setShowSessionFilters(!showSessionFilters)}
+              className={`p-1.5 border rounded-lg hover:bg-gray-50 text-gray-600 flex items-center gap-2 ${showSessionFilters ? 'bg-blue-50 border-blue-300' : 'border-gray-300'}`}
+            >
+              <Filter className="w-4 h-4" />
+              <span className="text-sm">Filters</span>
+              {(sessionFilters.agent !== 'All' || sessionFilters.channel !== 'All' || sessionFilters.error !== 'All') && (
+                <span className="px-1.5 py-0.5 bg-blue-500 text-white text-xs rounded-full">
+                  {[sessionFilters.agent !== 'All', sessionFilters.channel !== 'All', sessionFilters.error !== 'All'].filter(Boolean).length}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+        
+        {/* Filter Panel */}
+        {showSessionFilters && (
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Agent</label>
+                <select 
+                  value={sessionFilters.agent}
+                  onChange={(e) => setSessionFilters({...sessionFilters, agent: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="All">All Agents</option>
+                  {uniqueAgents.map(agent => (
+                    <option key={agent} value={agent}>{agent}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Channel</label>
+                <select 
+                  value={sessionFilters.channel}
+                  onChange={(e) => setSessionFilters({...sessionFilters, channel: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="All">All Channels</option>
+                  {uniqueChannels.map(channel => (
+                    <option key={channel} value={channel}>{channel}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Error Type</label>
+                <select 
+                  value={sessionFilters.error}
+                  onChange={(e) => setSessionFilters({...sessionFilters, error: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="All">All Errors</option>
+                  {uniqueErrors.map(error => (
+                    <option key={error} value={error}>{error}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-gray-200">
+              <button 
+                onClick={() => setSessionFilters({ agent: 'All', channel: 'All', error: 'All', search: '' })}
+                className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800"
+              >
+                Clear All
+              </button>
+              <button 
+                onClick={() => setShowSessionFilters(false)}
+                className="px-4 py-1.5 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+              >
+                Apply Filters
+              </button>
+            </div>
+          </div>
+        )}
+        
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-3 text-sm font-medium text-gray-700">Session ID</th>
+                <th className="text-left p-3 text-sm font-medium text-gray-700">Agent</th>
+                <th className="text-left p-3 text-sm font-medium text-gray-700">Channel</th>
+                <th className="text-left p-3 text-sm font-medium text-gray-700">Error</th>
+                <th className="text-left p-3 text-sm font-medium text-gray-700">Duration</th>
+                <th className="text-left p-3 text-sm font-medium text-gray-700">Timestamp</th>
+                <th className="text-left p-3 text-sm font-medium text-gray-700">Status</th>
+                <th className="text-right p-3 text-sm font-medium text-gray-700">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {filteredSessions.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="p-6 text-center text-sm text-gray-500">
+                    No sessions found matching the current filters
+                  </td>
+                </tr>
+              ) : (
+                filteredSessions.map((session, i) => (
+                  <tr key={i} className="hover:bg-gray-50">
+                    <td className="p-3 text-sm text-blue-600 cursor-pointer hover:underline font-medium" onClick={() => setSelectedSession({ id: session.sessionId })}>
+                      {session.sessionId}
+                    </td>
+                    <td className="p-3 text-sm text-gray-900">{session.agentName}</td>
+                    <td className="p-3 text-sm text-gray-600">{session.channel}</td>
+                    <td className="p-3 text-sm text-red-600">{session.error}</td>
+                    <td className="p-3 text-sm text-gray-600">{session.duration}</td>
+                    <td className="p-3 text-sm text-gray-500">{session.timestamp}</td>
+                    <td className="p-3">
+                      <span className="px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-700">
+                        {session.status}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right">
+                      <button 
+                        onClick={() => setSelectedSession({ id: session.sessionId })}
+                        className="text-salesforce-blue text-sm hover:underline"
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        {filteredSessions.length > 0 && (
+          <div className="mt-3 text-xs text-gray-500">
+            Showing {filteredSessions.length} of {allSessions.length} sessions
+          </div>
+        )}
+      </div>
+
+      {/* Errors by Session Table */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-gray-900">Errors by Session</h3>
             <ReleaseBadge release="260" /><PriorityBadge priority="P0" />
           </div>
           <div className="flex items-center gap-3">
@@ -2769,6 +3203,55 @@ function InvestigationPage() {
           </table>
         </div>
       </div>
+
+      {/* Agent Breakdown Modal */}
+      {showAgentBreakdown && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => { setShowAgentBreakdown(false); setSelectedChartPoint(null) }}>
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-start">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Percentile Breakdown by Agent</h2>
+                {selectedChartPoint && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    Escalation Rate: {selectedChartPoint.value}% on {selectedChartPoint.date}
+                  </p>
+                )}
+              </div>
+              <button onClick={() => { setShowAgentBreakdown(false); setSelectedChartPoint(null) }} className="p-1 rounded-full border border-gray-300 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
+                <XCircle className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="text-left p-3 text-sm font-medium text-gray-700">Agent Name</th>
+                      <th className="text-right p-3 text-sm font-medium text-gray-700">Value</th>
+                      <th className="text-right p-3 text-sm font-medium text-gray-700">p50</th>
+                      <th className="text-right p-3 text-sm font-medium text-gray-700">p75</th>
+                      <th className="text-right p-3 text-sm font-medium text-gray-700">p95</th>
+                      <th className="text-right p-3 text-sm font-medium text-gray-700">p99</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {agentBreakdownData.map((agent, i) => (
+                      <tr key={i} className="hover:bg-gray-50">
+                        <td className="p-3 text-sm font-medium text-gray-900">{agent.agentName}</td>
+                        <td className="p-3 text-right text-sm text-gray-700 font-semibold">{agent.value}%</td>
+                        <td className="p-3 text-right text-sm text-gray-600">{agent.p50}%</td>
+                        <td className="p-3 text-right text-sm text-gray-600">{agent.p75}%</td>
+                        <td className="p-3 text-right text-sm text-gray-600">{agent.p95}%</td>
+                        <td className="p-3 text-right text-sm text-gray-600">{agent.p99}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -2783,10 +3266,10 @@ function RerouteToAgentBuilder() {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold text-emerald-800">Reroute User to Agent Builder</h3>
+              <h3 className="text-xl font-bold text-emerald-800">Reroute User to Agent Builder & Tools</h3>
               <ReleaseBadge release="260" /><PriorityBadge priority="P0" />
             </div>
-            <p className="text-emerald-700 mt-2">Navigate directly from monitoring views to configuration and detail views in Agent Builder.</p>
+            <p className="text-emerald-700 mt-2">When you find a failure, jump immediately to the configuration source to fix it.</p>
           </div>
         </div>
       </div>
@@ -2807,48 +3290,39 @@ function RerouteToAgentBuilder() {
             </div>
             <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
               <div className="flex items-center justify-between mb-2">
+                <span className="font-medium text-gray-900">Step</span>
+                <PriorityBadge priority="P0" />
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <span>→</span>
+                <span className="font-medium">Step within Session View</span>
+              </div>
+            </div>
+            <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+              <div className="flex items-center justify-between mb-2">
                 <span className="font-medium text-gray-900">Action</span>
                 <PriorityBadge priority="P0" />
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <span>→</span>
-                <span className="font-medium">Agent Builder</span>
-              </div>
-            </div>
-            <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-medium text-gray-900">Session</span>
-                <PriorityBadge priority="P0" />
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span>→</span>
-                <span className="font-medium">Session Page</span>
+                <span className="font-medium">Scale Center (Flow or APEX)</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-6">
-          <h4 className="font-semibold text-gray-900 mb-4">P1 Navigation Paths</h4>
-          <div className="space-y-3">
-            <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
+        <div className="bg-white rounded-xl shadow-sm border-2 border-gray-200 p-6">
+          <h4 className="font-semibold text-gray-900 mb-4">P2 - Optimizer Deep Links</h4>
+          <ReleaseBadge release="262" />
+          <div className="space-y-3 mt-3">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium text-gray-900">Agent</span>
-                <PriorityBadge priority="P1" />
+                <span className="font-medium text-gray-900">Trace Row / Moment</span>
+                <PriorityBadge priority="P2" />
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <span>→</span>
-                <span className="font-medium">Agent Builder</span>
-              </div>
-            </div>
-            <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-medium text-gray-900">Step</span>
-                <PriorityBadge priority="P1" />
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <span>→</span>
-                <span className="font-medium">Step within Session View</span>
+                <span className="font-medium">Deep link to specific moment in Optimizer</span>
               </div>
             </div>
           </div>
@@ -2991,24 +3465,6 @@ function OOTBMetrics() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <h4 className="text-lg font-semibold text-gray-900">P1: Alert Severity and Grouping</h4>
-          <ReleaseBadge release="262" /><PriorityBadge priority="P1" />
-        </div>
-        <p className="text-sm text-gray-600 mb-4">Users can assign "Critical," "Warning," or "Info" levels to alerts.</p>
-        <div className="flex gap-3">
-          {['Critical', 'Warning', 'Info'].map((severity, i) => (
-            <div key={i} className={`flex-1 p-4 rounded-lg border-2 ${severity === 'Critical' ? 'bg-red-50 border-red-200' : severity === 'Warning' ? 'bg-amber-50 border-amber-200' : 'bg-blue-50 border-blue-200'}`}>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-semibold text-gray-900">{severity}</span>
-                <PriorityBadge priority="P1" />
-              </div>
-              <p className="text-xs text-gray-600">Alerts grouped by severity level</p>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   )
 }
@@ -3023,15 +3479,29 @@ function AgentAvailability() {
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold text-emerald-800">Agent Availability & Reliability</h3>
-              <ReleaseBadge release="260" /><PriorityBadge priority="P0" />
+              <h3 className="text-xl font-bold text-emerald-800">Agent & Channel Availability</h3>
+              <ReleaseBadge release="260" /><ReleaseBadge release="262" /><PriorityBadge priority="P0" />
             </div>
-            <p className="text-emerald-700 mt-2">Monitor agent heartbeat and distinguish between "0 sessions" (no traffic) and "System Unresponsive" (down).</p>
+            <p className="text-emerald-700 mt-2">Agent Availability (260 P0) based on STDM records. Channel Availability (262 P0) — see "Agent Availability Metric & Alerting" PRD. Detect silent failures when agents stop responding.</p>
+            <div className="mt-4 p-4 bg-white rounded-lg border border-emerald-200">
+              <div className="text-xs font-semibold text-emerald-800 mb-2">Agent Response Coverage Formula</div>
+              <code className="text-sm text-gray-700 block">
+                (User turns with [agent response OR session end] / User turns in agent-eligible sessions) × 100
+              </code>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6 mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <Globe className="w-5 h-5 text-blue-600" />
+            <h4 className="font-semibold text-gray-900">Channel Availability</h4>
+            <ReleaseBadge release="262" /><PriorityBadge priority="P0" />
+          </div>
+          <p className="text-sm text-gray-600">Add Channel Availability metrics. See "Agent Availability Metric & Alerting" PRD.</p>
+        </div>
+        <div className="grid grid-cols-3 gap-6">
         <div className="bg-white rounded-xl shadow-sm border-2 border-emerald-200 p-6">
           <div className="flex items-center gap-2 mb-3">
             <Activity className="w-5 h-5 text-emerald-600" />
@@ -3110,18 +3580,18 @@ function EnhancedAlerting() {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h3 className="text-xl font-bold text-emerald-800">Alerting Improvements</h3>
-              <ReleaseBadge release="260-264" />
+              <ReleaseBadge release="262" />
             </div>
             <p className="text-emerald-700 mt-2">Comprehensive alerting capabilities including distribution lists, Slack, webhooks, anomaly detection, and severity levels.</p>
           </div>
         </div>
       </div>
 
-      {/* Alert Severity - P1 Release 262 */}
-      <div className="bg-white rounded-xl shadow-sm border-2 border-amber-200 p-6">
+      {/* Alert Severity and Grouping - P2 Release 262 */}
+      <div className="bg-white rounded-xl shadow-sm border-2 border-gray-200 p-6">
         <div className="flex items-center gap-2 mb-4">
           <h3 className="text-lg font-semibold text-gray-900">Alert Severity and Grouping</h3>
-          <ReleaseBadge release="262" /><PriorityBadge priority="P1" />
+          <ReleaseBadge release="262" /><PriorityBadge priority="P2" />
         </div>
         <p className="text-sm text-gray-600 mb-4">Users can assign "Critical," "Warning," or "Info" levels to alerts.</p>
         <div className="flex gap-3">
@@ -3129,7 +3599,7 @@ function EnhancedAlerting() {
             <div key={i} className={`flex-1 p-4 rounded-lg border-2 ${severity === 'Critical' ? 'bg-red-50 border-red-200' : severity === 'Warning' ? 'bg-amber-50 border-amber-200' : 'bg-blue-50 border-blue-200'}`}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-semibold text-gray-900">{severity}</span>
-                <PriorityBadge priority="P1" />
+                <PriorityBadge priority="P2" />
               </div>
               <p className="text-xs text-gray-600">Alerts grouped by severity level</p>
             </div>
@@ -3146,7 +3616,7 @@ function EnhancedAlerting() {
               <h3 className="text-lg font-semibold text-gray-900">Email Distribution Lists</h3>
               <ReleaseBadge release="262" /><PriorityBadge priority="P0" />
       </div>
-            <p className="text-sm text-gray-500 mt-1">Send alerts to multiple team members via email distribution lists</p>
+            <p className="text-sm text-gray-500 mt-1">Enable Admins to set up alerts for others via email distribution lists. Option in alert creation flow to send to admin-provided email lists or send to self.</p>
           </div>
         </div>
         <div className="space-y-3">
@@ -3210,12 +3680,12 @@ function EnhancedAlerting() {
         </div>
       </div>
 
-      {/* Anomaly Detection - P1 Release 260 */}
-      <div className="bg-white rounded-xl shadow-sm border-2 border-emerald-200 p-6">
+      {/* Anomaly Detection - P1 Release 262 */}
+      <div className="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6">
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-emerald-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Anomaly Detection Alerts</h3>
-          <ReleaseBadge release="260" /><PriorityBadge priority="P1" />
+          <TrendingUp className="w-5 h-5 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900">Anomaly Detection (Unusual Change Detection)</h3>
+          <ReleaseBadge release="262" /><PriorityBadge priority="P1" />
         </div>
         <p className="text-sm text-gray-600 mb-4">Automatically detect unusual changes without manually setting thresholds.</p>
         <div className="grid grid-cols-2 gap-4">
@@ -3237,10 +3707,10 @@ function EnhancedAlerting() {
       <div className="bg-white rounded-xl shadow-sm border-2 border-purple-200 p-6">
         <div className="flex items-center gap-2 mb-4">
           <Clock className="w-5 h-5 text-purple-600" />
-          <h3 className="text-lg font-semibold text-gray-900">Admin Org-wide Cooldown</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Admin Org-level Cooldown Customization</h3>
           <ReleaseBadge release="264" /><PriorityBadge priority="P1" />
         </div>
-        <p className="text-sm text-gray-600 mb-4">Admin sets a global cooldown (e.g., 15–180 min) to prevent alert spam.</p>
+        <p className="text-sm text-gray-600 mb-4">Allow admin-level cooldown customization for the org.</p>
         <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-gray-900">Global Cooldown Setting</span>
@@ -3276,10 +3746,10 @@ function EventsDetectors() {
       </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold text-emerald-800">Events & Rules System</h3>
+              <h3 className="text-xl font-bold text-emerald-800">Enhanced Experience</h3>
               <ReleaseBadge release="260" /><PriorityBadge priority="P0" />
             </div>
-            <p className="text-emerald-700 mt-2">Alerts section in left sidebar with Rules (Config) and Events (Log) tabs. Centralized event log with lifecycle management.</p>
+            <p className="text-emerald-700 mt-2">Seamless workflow for managing alerts. See "Agent Health Monitoring Enhanced Experience" tab — Events Tab, Smart Routing, Lifecycle.</p>
           </div>
         </div>
       </div>
@@ -3655,75 +4125,6 @@ function EventsDetectors() {
   )
 }
 
-function ScalableExports() {
-  return (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-6">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-            <Download className="w-6 h-6 text-blue-600" />
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold text-blue-800">Scalable Exports</h3>
-              <ReleaseBadge release="262" /><PriorityBadge priority="P0" />
-            </div>
-            <p className="text-blue-700 mt-2">Enterprise-grade export functionality tested for large enterprise customers. Export within 5 minutes of Data Cloud landing.</p>
-          </div>
-        </div>
-      </div>
-
-        <div className="grid grid-cols-3 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Download className="w-5 h-5 text-blue-600" />
-            <h4 className="font-semibold text-gray-900">Export SLA</h4>
-            <PriorityBadge priority="P0" />
-          </div>
-          <div className="space-y-2">
-            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-sm font-medium text-gray-900">5 Minutes</p>
-              <p className="text-xs text-gray-600">From Data Cloud landing</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Server className="w-5 h-5 text-blue-600" />
-            <h4 className="font-semibold text-gray-900">Large Volume</h4>
-            <PriorityBadge priority="P0" />
-          </div>
-          <p className="text-sm text-gray-600 mb-3">Handle large enterprise data volumes without timeouts.</p>
-          <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-            <p className="text-xs text-gray-600">Validated in pre-GA large org</p>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6">
-          <div className="flex items-center gap-2 mb-3">
-            <CheckCircle2 className="w-5 h-5 text-blue-600" />
-            <h4 className="font-semibold text-gray-900">Completion</h4>
-            <PriorityBadge priority="P0" />
-          </div>
-          <div className="space-y-2">
-            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-sm font-medium text-gray-900">Downloadable Artifact</p>
-            </div>
-            <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-sm font-medium text-gray-900">Audit Log Entry</p>
-            </div>
-            <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-              <p className="text-sm font-medium text-gray-900">Actionable Errors</p>
-              <p className="text-xs text-gray-600">With retry option</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function UpgradePath() {
   return (
     <div className="space-y-6">
@@ -3737,7 +4138,7 @@ function UpgradePath() {
               <h3 className="text-xl font-bold text-purple-800">Upgrade Path (Tableau Plus)</h3>
               <ReleaseBadge release="264" /><PriorityBadge priority="P2" />
             </div>
-            <p className="text-purple-700 mt-2">In-product upgrade experience for advanced capabilities like dashboard customization.</p>
+            <p className="text-purple-700 mt-2">Product experience for users to upgrade and get Tableau Plus for features such as dashboard customization (adding/removing metrics). All surfaces for these features should highlight an upgrade is required if the user does not have the right license.</p>
           </div>
         </div>
       </div>
@@ -3781,7 +4182,7 @@ function AgenticMonitoring() {
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-violet-50 to-purple-50 border-2 border-violet-300 rounded-xl p-6">
-        <div className="flex items-start gap-4"><div className="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center"><Sparkles className="w-6 h-6 text-violet-600" /></div><div className="flex-1"><div className="flex items-center gap-2"><h3 className="text-xl font-bold text-violet-800">Agentic Health Monitoring</h3><ReleaseBadge release="266+" /><PriorityBadge priority="P1" /></div><p className="text-violet-700 mt-2">Ask questions about your alerts in natural language. Get AI-powered insights.</p></div></div>
+        <div className="flex items-start gap-4"><div className="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center"><Sparkles className="w-6 h-6 text-violet-600" /></div><div className="flex-1"><div className="flex items-center gap-2"><h3 className="text-xl font-bold text-violet-800">Agentic Health Monitoring</h3><ReleaseBadge release="266+" /><PriorityBadge priority="P1" /></div><p className="text-violet-700 mt-2">Support agentic health monitoring experience where users can ask/debug alerts to understand their monitoring dashboard better. Via Obs Agent. (Tableau)</p></div></div>
       </div>
       <div className="bg-white rounded-xl shadow-sm border-2 border-violet-200 overflow-hidden">
         <div className="p-4 border-b border-violet-200 bg-violet-50"><div className="flex items-center gap-2"><Bot className="w-5 h-5 text-violet-600" /><span className="font-semibold text-gray-900">Health Monitoring Assistant</span><span className="px-2 py-0.5 bg-violet-100 text-violet-700 text-xs rounded">AI-Powered</span></div></div>
@@ -3794,22 +4195,98 @@ function AgenticMonitoring() {
   )
 }
 
+function MonitoringDashboard() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-6">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+            <RefreshCw className="w-6 h-6 text-blue-600" />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h3 className="text-xl font-bold text-blue-800">Monitoring Dashboard</h3>
+              <ReleaseBadge release="262" /><PriorityBadge priority="P1" />
+            </div>
+            <p className="text-blue-700 mt-2">Time range views and aggregation options for monitoring agent health metrics.</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6">
+          <h4 className="font-semibold text-gray-900 mb-3">Last 1 Hour View</h4>
+          <PriorityBadge priority="P1" />
+          <p className="text-sm text-gray-600 mt-2">Support last 1 hour view for real-time monitoring.</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6">
+          <h4 className="font-semibold text-gray-900 mb-3">Extended Views</h4>
+          <PriorityBadge priority="P2" />
+          <p className="text-sm text-gray-600 mt-2">Support last 3 hours, last 12 hours. Show timestamp of last dashboard update.</p>
+        </div>
+      </div>
+      <div className="bg-white rounded-xl shadow-sm border-2 border-blue-200 p-6">
+        <h4 className="font-semibold text-gray-900 mb-3">Aggregations</h4>
+        <PriorityBadge priority="P1" />
+        <p className="text-sm text-gray-600 mt-2">Support 10 min, 15 min, 30 min aggregations.</p>
+      </div>
+      <div className="bg-amber-50 rounded-xl border-2 border-amber-200 p-6">
+        <h4 className="font-semibold text-gray-900 mb-2">Real-Time Pipeline</h4>
+        <PriorityBadge priority="P1" />
+        <p className="text-sm text-gray-600">If org has not opted in for "real time" pipeline, show message notification at top with link to documentation or setup page.</p>
+      </div>
+    </div>
+  )
+}
+
+function DashboardCustomization() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-300 rounded-xl p-6">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+            <Sliders className="w-6 h-6 text-purple-600" />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h3 className="text-xl font-bold text-purple-800">Dashboard Customization</h3>
+              <ReleaseBadge release="264" /><PriorityBadge priority="P1" />
+            </div>
+            <p className="text-purple-700 mt-2">Add or remove metrics from the monitoring tab. Requires Tableau Plus.</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border-2 border-purple-200 p-6">
+          <h4 className="font-semibold text-gray-900 mb-3">Add/Remove Metrics</h4>
+          <PriorityBadge priority="P1" />
+          <p className="text-sm text-gray-600 mt-2">Add any metric from Agentforce Analytics. Remove added metrics from monitoring tab.</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border-2 border-purple-200 p-6">
+          <h4 className="font-semibold text-gray-900 mb-3">Tags</h4>
+          <PriorityBadge priority="P1" />
+          <p className="text-sm text-gray-600 mt-2">Support addition of Tags to be monitored on the health monitoring dashboard.</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function SetupOnboarding() {
   const [toggleEnabled, setToggleEnabled] = useState(true)
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-300 rounded-xl p-6">
-        <div className="flex items-start gap-4"><div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center"><Zap className="w-6 h-6 text-emerald-600" /></div><div className="flex-1"><div className="flex items-center gap-2"><h3 className="text-xl font-bold text-emerald-800">Setup Flow</h3><ReleaseBadge release="260" /><PriorityBadge priority="P0" /></div><p className="text-emerald-700 mt-2">Enable Health Monitoring for your org and guide new users through setup.</p></div></div>
+        <div className="flex items-start gap-4"><div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center"><Zap className="w-6 h-6 text-emerald-600" /></div><div className="flex-1"><div className="flex items-center gap-2"><h3 className="text-xl font-bold text-emerald-800">Setup Flow</h3><ReleaseBadge release="262" /><PriorityBadge priority="P0" /></div><p className="text-emerald-700 mt-2">P0: Include a toggle in the setup page for users to enable health monitoring. (TBD whether we reuse STDM toggle or make a new one). P1: Beta FRE experience — users who don't have the toggle enabled see a UI that guides them on enabling it.</p></div></div>
       </div>
       <div className="bg-white rounded-xl shadow-sm border-2 border-emerald-200 p-6">
-        <div className="flex items-center gap-2 mb-4"><Settings className="w-5 h-5 text-emerald-600" /><h3 className="text-lg font-semibold text-gray-900">Health Monitoring Toggle</h3><ReleaseBadge release="260" /><PriorityBadge priority="P0" /></div>
+        <div className="flex items-center gap-2 mb-4"><Settings className="w-5 h-5 text-emerald-600" /><h3 className="text-lg font-semibold text-gray-900">Enablement Toggle</h3><ReleaseBadge release="262" /><PriorityBadge priority="P0" /></div>
         <div className="bg-gray-50 rounded-lg p-4"><div className="flex items-center justify-between">
           <div className="flex items-center gap-3"><div className={`w-12 h-6 rounded-full cursor-pointer transition-colors ${toggleEnabled ? 'bg-emerald-500' : 'bg-gray-300'}`} onClick={() => setToggleEnabled(!toggleEnabled)}><div className={`w-5 h-5 rounded-full bg-white shadow mt-0.5 transition-transform ${toggleEnabled ? 'translate-x-6.5 ml-6' : 'translate-x-0.5 ml-0.5'}`} /></div><div><p className="font-medium text-gray-900">Agent Health Monitoring</p><p className="text-xs text-gray-500">Toggle in Setup page to enable</p></div></div>
           <span className={`px-3 py-1 rounded-full text-sm font-medium ${toggleEnabled ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'}`}>{toggleEnabled ? 'Enabled' : 'Disabled'}</span>
         </div></div>
       </div>
       <div className="bg-white rounded-xl shadow-sm border-2 border-emerald-200 p-6">
-        <div className="flex items-center gap-2 mb-4"><Sparkles className="w-5 h-5 text-emerald-600" /><h3 className="text-lg font-semibold text-gray-900">First Run Experience (FRE)</h3><ReleaseBadge release="260" /><PriorityBadge priority="P0" /></div>
+        <div className="flex items-center gap-2 mb-4"><Sparkles className="w-5 h-5 text-emerald-600" /><h3 className="text-lg font-semibold text-gray-900">First Run Experience (FRE)</h3><ReleaseBadge release="262" /><PriorityBadge priority="P1" /></div>
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
           <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4"><Activity className="w-8 h-8 text-emerald-600" /></div>
           <h4 className="text-xl font-bold text-gray-900 mb-2">Welcome to Agent Health Monitoring</h4>
